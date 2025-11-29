@@ -1,0 +1,4 @@
+.input-field {
+  @apply w-full p-3 rounded-md bg-[var(--color-bg)] text-[var(--color-text)] placeholder-gray-400 border border-[var(--color-border)]
+         focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)];
+}

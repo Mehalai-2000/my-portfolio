@@ -1,1 +1,30 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Inter&family=Poppins:wght@500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: var(--color-bg);
+}
+html {
+  scroll-behavior: smooth;
+}
+
+:root {
+  --color-primary: #3A7BD5;           /* Elegant blue accent – calm and professional */
+  --color-bg: #F9FAFB;                /* Very light gray background – clean and modern */
+  --color-text: #1E293B;              /* Dark slate – perfect for readability */
+  --color-card: #FFFFFF;              /* White for clean card contrast */
+  --color-accent: #2563EB;            /* Deep royal blue accent for hover or highlights */
+  --color-border: rgba(0, 0, 0, 0.1); /* Soft subtle border */
+}
+
+.dark {
+  --color-primary: #60A5FA;           /* Lighter blue for dark mode */
+  --color-bg: #0F172A;                /* Deep navy background – elegant and immersive */
+  --color-text: #F1F5F9;              /* Light gray-white text */
+  --color-card: #1E293B;              /* Dark slate surface */
+  --color-accent: #3B82F6;            /* Vivid blue for buttons and links */
+  --color-border: #334155;            /* Soft but visible border */
+}

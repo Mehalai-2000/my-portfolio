@@ -1,0 +1,8 @@
+/* Optional glow on hover */
+.nav-item-3d {
+  transition: all 0.3s ease;
+}
+.nav-item-3d:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
+}
