@@ -2,26 +2,27 @@
   <div class="flex items-center justify-between p-10 gap-10">
 
     <!-- Left Side: Image -->
-    <div class="w-[300px] h-[350px] overflow-hidden  shadow-lg ml-20">
+    <div appScrollAnimation class="w-[300px] h-[350px] overflow-hidden  shadow-lg ml-20 scroll-hidden delay-100">
       <img src="assets/2image.jpg" alt="About Image" class="w-full h-full object-cover" />
     </div>
 
     <!-- Right Side: About Content -->
     <div class="flex-1 flex flex-col justify-center pl-10 mr-20">
 
-      <p class="text-sm font-bold text-[var(--color-primary)]"
-        style="font-family: 'DM Sans', sans-serif;">
+      <p class="text-sm font-bold text-[var(--color-primary)]" style="font-family: 'DM Sans', sans-serif;">
         A Little Insight
       </p>
 
-      <div class="text-2xl font-bold font-sans text-[var(--color-text)] text-left"
+      <div appScrollAnimation
+        class="text-2xl font-bold font-sans text-[var(--color-text)] text-left scroll-hidden delay-200"
         style="font-family: 'Poppins', sans-serif;">
         About Me
         <div class="mt-2 border-t-2 border-[var(--color-primary)] w-16"></div>
       </div>
 
       <!-- Paragraph -->
-      <p class="mt-2 text-sm text-base text-[var(--color-text)] text-left leading-loose">
+      <p appScrollAnimation
+        class="mt-2 text-sm text-base text-[var(--color-text)] text-left leading-loose scroll-hidden delay-300">
         My Name is M.Ramumanimehalai. I'm a passionate Frontend Developer with 2 years of experience in crafting
         intuitive UI designs for both web and
         mobile applications. Skilled in API integration and frontend development, I've contributed to 2 mobile apps and
@@ -30,7 +31,7 @@
       </p>
 
       <!-- Info Grid (aligned with heading) -->
-      <div class="mt-5 border-2 border-[var(--color-primary)] p-6">
+      <div appScrollAnimation class="mt-5 border-2 border-[var(--color-primary)] p-6 scroll-hidden delay-300">
 
         <div class="grid grid-cols-2 gap-6">
 
@@ -69,7 +70,7 @@
         </div>
       </div>
 
-      <div class="about-buttons">
+      <div appScrollAnimation class="about-buttons scroll-hidden delay-300">
         <button
           class="flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent)] text-white text-sm font-medium shadow-md hover:scale-105 hover:shadow-[var(--color-primary)] transition-transform duration-300">
           <lucide-icon name="download" class="w-4 h-4" /> Download CV

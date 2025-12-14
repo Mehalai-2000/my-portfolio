@@ -1,5 +1,5 @@
 <nav
-  class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-4 transition-colors duration-300 border-b border-[color:var(--color-border)] shadow-sm dark:shadow-md bg-[color:var(--color-bg)]">
+  class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-4 transition-colors duration-300 border-b border-[color:var(--color-border)] shadow-sm dark:shadow-md bg-[color:var(--color-bg)] animate-slide-down">
   <h1 class="text-xl font-bold font-heading text-[var(--color-primary)] dark:text-[var(--color-primary)]">
     MANIMEHALAI
   </h1>
@@ -7,40 +7,42 @@
   <div class="flex items-center gap-10">
     <ul
       class="hidden md:flex gap-8 text-[16px] font-semibold font-sans text-[var(--color-text)] dark:text-[var(--color-text)]">
-      <li>
+      <li class="animate-fade-in" style="animation-delay: 0.1s">
         <a href="#home" [ngClass]="{'text-[var(--color-primary)] font-bold': activeSection === 'home'}"
-          class="transition duration-200 hover:text-[var(--color-primary)] cursor-pointer">Home</a>
+          class="nav-link transition duration-200 hover:text-[var(--color-primary)] cursor-pointer">Home</a>
       </li>
-      <li>
+      <li class="animate-fade-in" style="animation-delay: 0.2s">
         <a href="#about" [ngClass]="{'text-[var(--color-primary)] font-bold': activeSection === 'about'}"
-          class="transition duration-200 hover:text-[var(--color-primary)] cursor-pointer">About</a>
+          class="nav-link transition duration-200 hover:text-[var(--color-primary)] cursor-pointer">About</a>
       </li>
-      <li>
+      <li class="animate-fade-in" style="animation-delay: 0.3s">
         <a href="#services" [ngClass]="{'text-[var(--color-primary)] font-bold': activeSection === 'services'}"
-          class="transition duration-200 hover:text-[var(--color-primary)]">Services</a>
+          class="nav-link transition duration-200 hover:text-[var(--color-primary)]">Services</a>
       </li>
-      <li>
+      <li class="animate-fade-in" style="animation-delay: 0.4s">
         <a href="#skills" [ngClass]="{'text-[var(--color-primary)] font-bold': activeSection === 'skills'}"
-          class="transition duration-200 hover:text-[var(--color-primary)]">Skills</a>
+          class="nav-link transition duration-200 hover:text-[var(--color-primary)]">Skills</a>
       </li>
-      <li>
+      <li class="animate-fade-in" style="animation-delay: 0.5s">
         <a href="#projects" [ngClass]="{'text-[var(--color-primary)] font-bold': activeSection === 'projects'}"
-          class="transition duration-200 hover:text-[var(--color-primary)]">Projects</a>
+          class="nav-link transition duration-200 hover:text-[var(--color-primary)]">Projects</a>
       </li>
-      <li>
+      <li class="animate-fade-in" style="animation-delay: 0.6s">
         <a href="#contact" [ngClass]="{'text-[var(--color-primary)] font-bold': activeSection === 'contact'}"
-          class="transition duration-200 hover:text-[var(--color-primary)]">Contact</a>
+          class="nav-link transition duration-200 hover:text-[var(--color-primary)]">Contact</a>
       </li>
     </ul>
 
     <button
-      class="flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent)] text-white text-sm font-medium shadow-md hover:scale-105 hover:shadow-[var(--color-primary)] transition-transform duration-300">
+      class="flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent)] text-white text-sm font-medium shadow-md hover:scale-105 hover:shadow-[var(--color-primary)] transition-transform duration-300 animate-fade-in"
+      style="animation-delay: 0.7s">
       <lucide-icon name="download" class="w-4 h-4" />
       Download CV
     </button>
 
     <button (click)="toggleTheme()"
-      class="w-10 h-10 ml-4 rounded-full shadow-md hover:scale-105 transition-transform duration-300 flex items-center justify-center">
+      class="w-10 h-10 ml-4 rounded-full shadow-md hover:scale-105 transition-transform duration-300 flex items-center justify-center animate-fade-in"
+      style="animation-delay: 0.8s">
       <lucide-icon name="sun" *ngIf="!isDarkMode" class="w-5 h-5 text-[var(--color-accent)]"></lucide-icon>
       <lucide-icon name="moon" *ngIf="isDarkMode" class="w-5 h-5 text-[var(--color-accent)]"></lucide-icon>
       <span class="sr-only">Toggle Theme</span>

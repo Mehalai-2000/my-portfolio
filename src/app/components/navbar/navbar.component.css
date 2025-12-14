@@ -6,3 +6,70 @@
   transform: translateY(-2px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
 }
+
+/* Animations */
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes expandWidth {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.animate-slide-down {
+  animation: slideDown 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-fade-in {
+  opacity: 0; /* Start hidden */
+  animation: fadeInDown 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Base styles for nav links to support hover effect */
+.nav-link {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 2px;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: var(--color-primary);
+  transition: width 0.3s ease-out;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+.nav-link.active::after {
+  width: 100%;
+}
