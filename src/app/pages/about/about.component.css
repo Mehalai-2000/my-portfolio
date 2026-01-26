@@ -1,0 +1,89 @@
+.about-buttons {
+    margin-top: 25px;
+    display: flex;
+    gap: 20px;
+  }
+
+  .btn-outline {
+    padding: 5px 21px;
+    border: 2px solid var(--color-primary);
+    border-radius: 30px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-primary);
+    background: transparent;
+    text-decoration: none;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .btn-outline::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+    z-index: -1;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+    border-radius: 30px;
+  }
+
+  .btn-outline:hover {
+    color: var(--color-bg);
+    border-color: transparent;
+
+  }
+
+  .btn-outline:hover::before {
+    transform: scaleX(1);
+  }
+
+
+
+/* Animation for glowing pulse effect */
+@keyframes pulse-glow {
+    0% {
+        box-shadow: 0 0 10px 2px var(--color-primary);
+        /* Reduced initial glow */
+    }
+
+    50% {
+        box-shadow: 0 0 20px 5px var(--color-primary);
+        /* Reduced size of the bigger glow */
+    }
+
+    100% {
+        box-shadow: 0 0 10px 2px var(--color-primary);
+        /* Reduced initial glow */
+    }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* final visible state */
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* for directional classes you already use */
+.animate-left  { transform: translateX(-40px); }
+.animate-left.visible { transform: translateX(0); }
+.animate-right { transform: translateX(40px); }
+.animate-right.visible { transform: translateX(0); }
+.animate-up { transform: translateY(30px); }
+.animate-up.visible { transform: translateY(0); }
+.animate-pop { transform: scale(0.9); opacity: 0; }
+.animate-pop.visible { transform: scale(1); opacity: 1; }
+
+/* stagger item */
+.stagger-item { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.stagger-item.visible { opacity: 1; transform: translateY(0); }

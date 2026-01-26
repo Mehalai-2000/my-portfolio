@@ -1,0 +1,48 @@
+<div class="about-section flex items-center justify-between">
+
+  <div class="about-content flex flex-col reveal animate-fade-left">
+    <h2 class="text-4xl font-bold font-heading text-[var(--color-primary)] reveal animate-fade-up delay-150 mb-3">
+      Hello!
+    </h2>
+    <h1
+      class="text-3xl sm:text-4xl md:text-6xl font-extrabold font-heading text-[var(--color-primary)] reveal animate-fade-up delay-250 leading-normal break-words whitespace-normal">
+      I'm <span class="text-[var(--color-accent)]">{{ currentText }}</span>
+    </h1>
+
+    <div
+      class="bio text-lg md:text-xl text-[var(--color-text)]/80 font-body leading-relaxed max-w-xl reveal animate-fade-up delay-500">
+      Frontend application developer with 3+ years of experience building modern, responsive, and user-centric web and
+      mobile
+      interfaces.
+    </div>
+
+    <button class="group flex items-center gap-3 px-8 py-4 rounded-xl
+         bg-[var(--color-accent)] text-white text-base font-bold
+         transition-all duration-300 hover:scale-105 hover:shadow-lg
+         hover:brightness-110 active:scale-95 mt-8 reveal animate-fade-up delay-700 btn-hover-effect">
+      <lucide-icon name="download"
+        class="w-5 h-5 transition-transform duration-300 group-hover:rotate-12"></lucide-icon>
+      <span class="tracking-wide">Download Resume</span>
+    </button>
+  </div>
+
+
+  <div class="about-image reveal animate-zoom-in delay-500 relative flex justify-center items-center">
+    <div class="absolute w-[350px] h-[350px] md:w-[450px] md:h-[450px] animate-shine-glow rounded-full z-0"></div>
+
+    <div class="reveal animate-zoom-in delay-500">
+      <div class="relative z-10 w-[280px] h-[340px] md:w-[340px] md:h-[400px] glow-circle animate-glow">
+        <img src="assets/myphoto.png" alt="Ramumanimehalai" class="w-full h-full object-cover rounded-[40px]" />
+      </div>
+    </div>
+
+    <div
+      class="absolute top-8 right-0 md:-right-8 bg-white/90 dark:bg-slate-800/90 backdrop-blur-md p-4 rounded-xl shadow-lg border border-white/20 dark:border-white/10 flex items-center gap-3 animate-float z-20 max-w-[180px]">
+      <span class="text-3xl font-bold text-[var(--color-accent)]">3+</span>
+      <div class="text-xs font-bold leading-tight text-[var(--color-text)]">
+        Years of<br>Experience
+      </div>
+    </div>
+
+  </div>
+</div>

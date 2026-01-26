@@ -1,0 +1,111 @@
+<nav [ngClass]="{
+    'py-1.5 md:py-2 shadow-lg backdrop-blur-xl bg-[#f8fafc]/60 dark:bg-[#0f172a]/60 border-[var(--color-border)]': isScrolled, 
+    'py-2 md:py-3 shadow-none backdrop-blur-none bg-transparent border-transparent': !isScrolled, 
+    'navbar-entered': navbarEntered
+  }" class="fixed z-50 transition-all duration-500 navbar-container 
+             top-2 left-2 right-2 border rounded-full overflow-hidden
+             md:top-4 md:w-[90%] md:max-w-7xl md:mx-auto md:left-0 md:right-0 md:overflow-visible">
+
+  <div class="px-3 md:px-6 flex items-center justify-between w-full h-full">
+    <!-- Logo -->
+    <a href="#home" class="group relative logo-animate flex items-center gap-4 logo-shine-wrap">
+      <!-- Diamond Logo -->
+      <div class="relative group-hover:scale-110 transition-transform duration-300">
+        <div
+          class="w-8 h-8 md:w-10 md:h-10 bg-[var(--color-accent)] rotate-45 rounded-lg shadow-lg shadow-[var(--color-accent)]/40 flex items-center justify-center transition-all duration-300 group-hover:rotate-[225deg] group-hover:shadow-[var(--color-accent)]/60">
+          <span
+            class="font-heading text-lg md:text-xl font-bold text-white -rotate-45 group-hover:-rotate-[225deg] transition-all duration-300 select-none">
+            R
+          </span>
+        </div>
+      </div>
+
+      <!-- Name with Shine -->
+      <h1
+        class="text-lg md:text-2xl font-bold font-signature tracking-wide whitespace-normal break-all md:break-normal md:whitespace-nowrap leading-none">
+        <span class="logo-shine-text">
+          Ramumanimehalai
+        </span>
+      </h1>
+    </a>
+
+
+    <!-- Desktop Menu -->
+    <div class="hidden lg:flex items-center gap-8">
+      <ul class="flex gap-6 text-[15px] font-medium text-[var(--color-text)]">
+        <li *ngFor="let item of ['home', 'about', 'services', 'skills', 'projects', 'contact']; let i = index"
+          [style.animation-delay]="(i * 50) + 'ms'" class="nav-item-animate">
+          <a [href]="'#' + item" [ngClass]="{'active font-semibold': activeSection === item}"
+            class="nav-link capitalize transition-all duration-300 hover:text-[var(--color-accent)] px-2 py-1 hover:scale-110 active:scale-95">
+            {{ item }}
+          </a>
+        </li>
+      </ul>
+
+      <div class="flex items-center gap-3 pl-4 border-l border-[var(--color-border)] button-group-animate">
+        <button (click)="toggleTheme()"
+          class="p-2 rounded-full hover:bg-[var(--color-primary)]/10 transition-all duration-300 text-[var(--color-text)] hover:scale-110 hover:rotate-12 active:scale-95 theme-toggle-btn">
+          <lucide-icon name="sun" *ngIf="!isDarkMode"
+            class="w-5 h-5 text-orange-500 transition-transform duration-300"></lucide-icon>
+          <lucide-icon name="moon" *ngIf="isDarkMode"
+            class="w-5 h-5 text-yellow-400 transition-transform duration-300"></lucide-icon>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu Toggle -->
+    <div class="lg:hidden flex items-center gap-4">
+      <button (click)="toggleTheme()"
+        class="p-2 rounded-full hover:bg-[var(--color-primary)]/10 text-[var(--color-text)] transition-all duration-300 hover:scale-110 active:scale-95">
+        <lucide-icon name="sun" *ngIf="!isDarkMode"
+          class="w-5 h-5 text-orange-500 transition-transform duration-300"></lucide-icon>
+        <lucide-icon name="moon" *ngIf="isDarkMode"
+          class="w-5 h-5 text-yellow-400 transition-transform duration-300"></lucide-icon>
+      </button>
+
+      <button (click)="toggleMobileMenu()"
+        class="p-2 text-[var(--color-text)] hover:text-[var(--color-primary)] transition-all duration-300 hover:scale-110 active:scale-95 mobile-menu-btn">
+        <lucide-icon [name]="isMobileMenuOpen ? 'x' : 'menu'" class="w-7 h-7 transition-transform duration-300"
+          [class.rotate-90]="isMobileMenuOpen"></lucide-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Menu Overlay -->
+
+</nav>
+
+<!-- Better Mobile Menu Implementation -->
+<div *ngIf="isMobileMenuOpen"
+  class="fixed inset-0 z-[60] bg-black/50 backdrop-blur-sm lg:hidden transition-opacity duration-300"
+  (click)="closeMobileMenu()">
+</div>
+
+<div *ngIf="isMobileMenuOpen"
+  class="fixed inset-y-0 right-0 z-[70] w-[75vw] max-w-sm lg:hidden bg-[var(--color-bg)] dark:bg-[#0b1021] shadow-2xl border-l border-[var(--color-primary)]/20 p-8 flex flex-col items-center justify-start overflow-y-auto animate-slide-in-right transform">
+
+  <button (click)="closeMobileMenu()"
+    class="absolute top-6 right-6 p-2 text-[var(--color-text)] hover:text-[var(--color-primary)] transition-transform hover:rotate-90">
+    <lucide-icon name="x" class="w-8 h-8"></lucide-icon>
+  </button>
+
+  <ul class="flex flex-col items-center gap-6 w-full pt-8 mt-16">
+    <li *ngFor="let item of ['home', 'about', 'services', 'skills', 'projects', 'contact']; let i = index"
+      [style.animation-delay]="(i * 100) + 'ms'" class="animate-slide-up w-full text-center">
+      <a [href]="'#' + item" (click)="closeMobileMenu()"
+        [ngClass]="{'active font-medium text-[var(--color-accent)]': activeSection === item, 'font-normal': activeSection !== item}"
+        class="text-[15px] font-heading text-[var(--color-text)] hover:text-[var(--color-accent)] inline-block py-2 capitalize transition-all duration-300 transform active:scale-95"
+        class="text-[15px] font-heading text-[var(--color-text)] hover:text-[var(--color-accent)] inline-block py-2 capitalize transition-all duration-300 transform active:scale-95">
+        {{ item }}
+      </a>
+    </li>
+  </ul>
+
+  <div class="mt-auto pb-4 animate-slide-up" style="animation-delay: 600ms;">
+    <button
+      class="w-full flex items-center justify-center gap-2 px-8 py-3 rounded-full bg-[var(--color-accent)] text-white text-[15px] font-bold shadow-lg active:scale-95 transition-transform">
+      <lucide-icon name="download" class="w-4 h-4" />
+      CV
+    </button>
+  </div>
+</div>

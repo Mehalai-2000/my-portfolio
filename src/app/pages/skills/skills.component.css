@@ -1,0 +1,14 @@
+@keyframes fill80 {
+    from { width: 0%; }
+    to { width: 80%; }
+  }
+  
+  .animate-fill-80 {
+    animation: fill80 1s forwards;
+  }
+  
+  .glow-progress {
+    box-shadow: 0 0 20px var(--color-primary), 0 0 40px var(--color-primary), 0 0 60px var(--color-primary);
+  }
+  
+  

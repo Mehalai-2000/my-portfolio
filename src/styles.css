@@ -1,1 +1,45 @@
-/* You can add global styles to this file, and also import other style files */
+/* Font imported in index.html */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: 'Petrona', serif;
+  font-weight: 400;
+}
+
+h1, h2, h3, h4, h5, h6, .font-heading {
+  font-family: "Petrona", serif;
+  font-weight: 700;
+}
+
+
+html {
+  scroll-behavior: smooth;
+}
+
+:root {
+  --color-primary: #111827;      /* Gray-900 */
+  --color-bg: #ffffff;           /* Pure White for crispness */
+  --color-text: #4b5563;         /* Gray-600 */
+  --color-card: #f3f4f6;         /* Gray-100 */
+  --color-accent: #0d9488;       /* Teal-600 */
+  --color-accent-rgb: 13, 148, 136;
+  --color-border: #e5e7eb;       /* Gray-200 */
+}
+
+
+.dark {
+  --color-primary: #f9fafb;      /* Gray-50 */
+  --color-bg: #030712;           /* Gray-950 (Deep & Rich) */
+  --color-text: #9ca3af;         /* Gray-400 */
+  --color-card: #111827;         /* Gray-900 */
+  --color-accent: #14b8a6;       /* Teal-500 (Electric Teal) */
+  --color-accent-rgb: 20, 184, 166;
+  --color-border: #1f2937;       /* Gray-800 */
+}
+
+
