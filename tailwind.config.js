@@ -16,8 +16,8 @@ module.exports = {
           border: 'var(--color-border)',
         },
         fontFamily: {
-          heading: ['"Petrona"', 'serif'],
-          body: ['"Petrona"', 'serif'],
+          heading: ['"Petrona"', 'sans-serif'],
+          body: ['"Petrona"', 'sans-serif'],
           signature: ['"Dancing Script"', 'cursive'],
         },
       },

@@ -7,9 +7,7 @@
              md:top-4 md:w-[90%] md:max-w-7xl md:mx-auto md:left-0 md:right-0 md:overflow-visible">
 
   <div class="px-3 md:px-6 flex items-center justify-between w-full h-full">
-    <!-- Logo -->
     <a href="#home" class="group relative logo-animate flex items-center gap-4 logo-shine-wrap">
-      <!-- Diamond Logo -->
       <div class="relative group-hover:scale-110 transition-transform duration-300">
         <div
           class="w-8 h-8 md:w-10 md:h-10 bg-[var(--color-accent)] rotate-45 rounded-lg shadow-lg shadow-[var(--color-accent)]/40 flex items-center justify-center transition-all duration-300 group-hover:rotate-[225deg] group-hover:shadow-[var(--color-accent)]/60">
@@ -20,7 +18,6 @@
         </div>
       </div>
 
-      <!-- Name with Shine -->
       <h1
         class="text-lg md:text-2xl font-bold font-signature tracking-wide whitespace-normal break-all md:break-normal md:whitespace-nowrap leading-none">
         <span class="logo-shine-text">
@@ -30,7 +27,6 @@
     </a>
 
 
-    <!-- Desktop Menu -->
     <div class="hidden lg:flex items-center gap-8">
       <ul class="flex gap-6 text-[15px] font-medium text-[var(--color-text)]">
         <li *ngFor="let item of ['home', 'about', 'services', 'skills', 'projects', 'contact']; let i = index"
@@ -53,7 +49,6 @@
       </div>
     </div>
 
-    <!-- Mobile Menu Toggle -->
     <div class="lg:hidden flex items-center gap-4">
       <button (click)="toggleTheme()"
         class="p-2 rounded-full hover:bg-[var(--color-primary)]/10 text-[var(--color-text)] transition-all duration-300 hover:scale-110 active:scale-95">
@@ -70,12 +65,8 @@
       </button>
     </div>
   </div>
-
-  <!-- Mobile Menu Overlay -->
-
 </nav>
 
-<!-- Better Mobile Menu Implementation -->
 <div *ngIf="isMobileMenuOpen"
   class="fixed inset-0 z-[60] bg-black/50 backdrop-blur-sm lg:hidden transition-opacity duration-300"
   (click)="closeMobileMenu()">
@@ -100,12 +91,4 @@
       </a>
     </li>
   </ul>
-
-  <div class="mt-auto pb-4 animate-slide-up" style="animation-delay: 600ms;">
-    <button
-      class="w-full flex items-center justify-center gap-2 px-8 py-3 rounded-full bg-[var(--color-accent)] text-white text-[15px] font-bold shadow-lg active:scale-95 transition-transform">
-      <lucide-icon name="download" class="w-4 h-4" />
-      CV
-    </button>
-  </div>
 </div>

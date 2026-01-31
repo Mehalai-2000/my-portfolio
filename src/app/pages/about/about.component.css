@@ -1,3 +1,59 @@
+/* Stacked Card Swing Animation */
+@keyframes swing-frame {
+   0% { transform: rotate(5deg); }
+   100% { transform: rotate(8deg); }
+}
+
+@keyframes float-gentle {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
+}
+
+/* Enhanced Photo Frame Style */
+.photo-frame {
+  position: relative;
+  z-index: 10;
+  border-radius: 16px;
+  /* Add gentle float to the container */
+  animation: float-gentle 6s ease-in-out infinite;
+}
+
+/* Behind Card (Color Accent) */
+.photo-frame::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--color-accent);
+    border-radius: 16px;
+    z-index: -1;
+    transform: rotate(6deg);
+    opacity: 0.8;
+    /* Swing animation for the background card */
+    animation: swing-frame 4s ease-in-out infinite alternate;
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.2);
+}
+
+/* The Image Itself */
+.photo-img {
+    border-radius: 16px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.15); /* Shadow on the image to separate from card */
+    background-color: var(--color-bg); /* Ensure no transparency issues */
+    position: relative; /* Keep it above ::before */
+    z-index: 2;
+}
+
+/* Hover Effect: Pause Float */
+.photo-frame:hover {
+    animation-play-state: paused;
+}
+
+
+/* Existing Styles Preserved below */
 .about-buttons {
     margin-top: 25px;
     display: flex;
@@ -42,9 +98,7 @@
     transform: scaleX(1);
   }
 
-
-
-/* Animation for glowing pulse effect */
+  /* Animation for glowing pulse effect */
 @keyframes pulse-glow {
     0% {
         box-shadow: 0 0 10px 2px var(--color-primary);
@@ -66,6 +120,8 @@
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.6s ease, transform 0.6s ease;
+  z-index: 10; /* Ensure content is above blobs */
+  position: relative;
 }
 
 /* final visible state */
