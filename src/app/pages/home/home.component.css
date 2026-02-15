@@ -257,15 +257,7 @@
   animation: popIn 0.7s ease-out forwards;
 }
 
-.reveal {
-  opacity: 0;
-  transform: translateY(20px);
-}
-
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
+/* .reveal styles removed - handled globally in styles.css */
 
 
 /* Responsive Design */

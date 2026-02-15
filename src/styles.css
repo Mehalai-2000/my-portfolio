@@ -9,6 +9,7 @@ body {
   color: var(--color-text);
   font-family: 'Petrona', sans-serif;
   font-weight: 400;
+  overflow-x: hidden;
 }
 
 h1, h2, h3, h4, h5, h6, .font-heading {
@@ -42,7 +43,103 @@ html {
   --color-border: #1f2937;       /* Gray-800 */
 }
 
+/* --- Scroll Animations --- */
 
+/* Base class for reveal elements */
+.reveal {
+  opacity: 0;
+  transition: opacity 1.2s ease-out, transform 1.2s ease-out;
+  /* Default transformation if no specific animation is applied */
+  transform: translateY(30px);
+}
+
+/* Only run animations when 'active' class is added by the directive */
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* If an element has an explicit animation class, we rely on keyframes.
+   We pause the animation initially, and run it when active. */
+.reveal[class*="animate-"] {
+  opacity: 0; /* Ensure hidden initially */
+  animation-play-state: paused !important;
+  transform: none; /* Let animation handle transform */
+}
+
+.reveal.active[class*="animate-"] {
+  animation-play-state: running !important;
+  opacity: 1; /* Ensure visible when running, though keyframes should handle it */
+}
+
+/* Keyframes (Global) */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Utility classes mapping to animations */
+.animate-up {
+  animation: fadeInUp 1.2s ease-out forwards;
+}
+
+.animate-left {
+  animation: fadeInLeft 1.2s ease-out forwards;
+}
+
+.animate-right {
+  animation: fadeInRight 1.2s ease-out forwards;
+}
+
+.animate-scale {
+  animation: scaleIn 1.2s ease-out forwards;
+}
+
+/* Stagger utilities */
+.delay-100 { animation-delay: 100ms; transition-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; transition-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; transition-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; transition-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; transition-delay: 500ms; }
 
 /* Toastr Styles */
-

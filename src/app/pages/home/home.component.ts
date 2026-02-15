@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { LucideAngularModule } from 'lucide-angular';
+import { ScrollRevealDirective } from '../../directives/scroll-reveal.directive';
 
 
 @Component({
   selector: 'app-home',
-  imports: [LucideAngularModule],
+  imports: [LucideAngularModule, ScrollRevealDirective],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -24,24 +25,6 @@ export class HomeComponent {
 
   ngOnInit() {
     this.typeEffect();
-  }
-
-  ngAfterViewInit() {
-    this.startRevealObserver();
-  }
-
-  startRevealObserver() {
-    const revealElements = document.querySelectorAll('.reveal');
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
-    }, { threshold: 0.2 });
-
-    revealElements.forEach(el => observer.observe(el));
   }
 
   typeEffect() {
