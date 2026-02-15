@@ -1,7 +1,4 @@
-import { Component, AfterViewInit, ElementRef, Renderer2, OnDestroy } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { Component, AfterViewInit, ElementRef, Renderer2 } from '@angular/core';
 import { LucideAngularModule } from 'lucide-angular';
 
 @Component({
@@ -10,59 +7,33 @@ import { LucideAngularModule } from 'lucide-angular';
   templateUrl: './about.component.html',
   styleUrl: './about.component.css'
 })
-export class AboutComponent implements AfterViewInit, OnDestroy {
-  private routerSub?: Subscription;
+export class AboutComponent implements AfterViewInit {
 
   constructor(
     private elRef: ElementRef<HTMLElement>,
-    private renderer: Renderer2,
-    private router: Router
-  ) {}
+    private renderer: Renderer2
+  ) { }
 
   ngAfterViewInit() {
-    this.routerSub = this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe(() => {
-        if (this.router.url.includes('about')) {
-          this.triggerAnimationWithDelay();
-        }
-      });
+    // Trigger animation immediately on load/init to ensure content is visible.
+    // This allows the animation to play once when the component renders.
+    // Since the content is hidden by default (opacity: 0), we must trigger this.
+    setTimeout(() => {
+      this.triggerAnimation();
+    }, 100);
   }
 
-  private triggerAnimationWithDelay() {
-  const host = this.elRef.nativeElement;
-
-  // ⛔ If navbar requested delay, skip router-triggered animation
-  if (host.hasAttribute('data-nav-delay')) {
-    return;
-  }
-
-  const revealEls: HTMLElement[] = Array.from(
-    host.querySelectorAll('.reveal, .stagger-item')
-  );
-
-  revealEls.forEach(el => this.renderer.removeClass(el, 'visible'));
-
-  setTimeout(() => {
-    this.playRevealAnimation();
-  }, 5000);
-}
-
-
-  private playRevealAnimation() {
+  private triggerAnimation() {
     const host = this.elRef.nativeElement;
     const revealEls: HTMLElement[] = Array.from(
       host.querySelectorAll('.reveal, .stagger-item')
     );
 
     revealEls.forEach((el, index) => {
+      // Add visible class with staggered delay
       setTimeout(() => {
         this.renderer.addClass(el, 'visible');
-      }, index * 250); // Smooth stagger animation
+      }, index * 100);
     });
-  }
-
-  ngOnDestroy() {
-    if (this.routerSub) this.routerSub.unsubscribe();
   }
 }

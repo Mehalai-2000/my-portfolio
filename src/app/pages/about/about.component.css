@@ -1,25 +1,19 @@
-/* Stacked Card Swing Animation */
 @keyframes swing-frame {
    0% { transform: rotate(5deg); }
    100% { transform: rotate(8deg); }
 }
 
-@keyframes float-gentle {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-  100% { transform: translateY(0); }
-}
-
-/* Enhanced Photo Frame Style */
 .photo-frame {
   position: relative;
   z-index: 10;
   border-radius: 16px;
-  /* Add gentle float to the container */
-  animation: float-gentle 6s ease-in-out infinite;
+  transition: transform 0.4s ease; 
 }
 
-/* Behind Card (Color Accent) */
+.photo-frame:hover {
+  transform: translateY(-10px); 
+}
+
 .photo-frame::before {
     content: '';
     position: absolute;
@@ -29,31 +23,27 @@
     z-index: -1;
     transform: rotate(6deg);
     opacity: 0.8;
-    /* Swing animation for the background card */
-    animation: swing-frame 4s ease-in-out infinite alternate;
     box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.4s ease; 
 }
 
-/* The Image Itself */
+.photo-frame:hover::before {
+    transform: rotate(8deg) scale(1.02); 
+}
+
 .photo-img {
     border-radius: 16px;
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
-    box-shadow: 0 15px 30px rgba(0,0,0,0.15); /* Shadow on the image to separate from card */
-    background-color: var(--color-bg); /* Ensure no transparency issues */
-    position: relative; /* Keep it above ::before */
+    box-shadow: 0 15px 30px rgba(0,0,0,0.15); 
+    background-color: var(--color-bg); 
+    position: relative; 
     z-index: 2;
 }
 
-/* Hover Effect: Pause Float */
-.photo-frame:hover {
-    animation-play-state: paused;
-}
 
-
-/* Existing Styles Preserved below */
 .about-buttons {
     margin-top: 25px;
     display: flex;
@@ -98,48 +88,98 @@
     transform: scaleX(1);
   }
 
-  /* Animation for glowing pulse effect */
 @keyframes pulse-glow {
     0% {
         box-shadow: 0 0 10px 2px var(--color-primary);
-        /* Reduced initial glow */
     }
 
     50% {
         box-shadow: 0 0 20px 5px var(--color-primary);
-        /* Reduced size of the bigger glow */
     }
 
     100% {
         box-shadow: 0 0 10px 2px var(--color-primary);
-        /* Reduced initial glow */
     }
 }
 
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 .reveal {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-  z-index: 10; /* Ensure content is above blobs */
-  position: relative;
+  opacity: 0; 
+  animation: fadeInUp 0.8s ease-out forwards;
 }
 
-/* final visible state */
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
+.animate-left {
+  animation-name: fadeInLeft;
 }
 
-/* for directional classes you already use */
-.animate-left  { transform: translateX(-40px); }
-.animate-left.visible { transform: translateX(0); }
-.animate-right { transform: translateX(40px); }
-.animate-right.visible { transform: translateX(0); }
-.animate-up { transform: translateY(30px); }
-.animate-up.visible { transform: translateY(0); }
-.animate-pop { transform: scale(0.9); opacity: 0; }
-.animate-pop.visible { transform: scale(1); opacity: 1; }
+.animate-right {
+  animation-name: fadeInRight;
+}
 
-/* stagger item */
-.stagger-item { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
-.stagger-item.visible { opacity: 1; transform: translateY(0); }
+.animate-up {
+  animation-name: fadeInUp;
+}
+
+
+.space-y-4 > .stagger-item:nth-child(1) { animation-delay: 0.1s; }
+.space-y-4 > .stagger-item:nth-child(2) { animation-delay: 0.2s; }
+.space-y-4 > .stagger-item:nth-child(3) { animation-delay: 0.3s; }
+.photo-frame { animation-delay: 0.1s; }
+.animate-right { animation-delay: 0.2s; }
+.text-4xl.animate-right { animation-delay: 0.3s; }
+.animate-up { animation-delay: 0.4s; }
+.mt-6.border-2 { animation-delay: 0.5s; }
+
+.about-info-card {
+  background: rgba(255, 255, 255, 0.65); 
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.4); 
+  border-radius: 20px;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07); 
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dark .about-info-card {
+  background: rgba(17, 24, 39, 0.7); 
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+}
+
+.about-info-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.1);
+}
+
+

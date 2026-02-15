@@ -29,7 +29,7 @@
 
     <div class="hidden lg:flex items-center gap-8">
       <ul class="flex gap-6 text-[15px] font-medium text-[var(--color-text)]">
-        <li *ngFor="let item of ['home', 'about', 'services', 'skills', 'projects', 'contact']; let i = index"
+        <li *ngFor="let item of ['home', 'about', 'skills', 'services', 'projects', 'contact']; let i = index"
           [style.animation-delay]="(i * 50) + 'ms'" class="nav-item-animate">
           <a [href]="'#' + item" [ngClass]="{'active font-semibold': activeSection === item}"
             class="nav-link capitalize transition-all duration-300 hover:text-[var(--color-accent)] px-2 py-1 hover:scale-110 active:scale-95">

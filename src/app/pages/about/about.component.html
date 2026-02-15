@@ -1,87 +1,137 @@
 <section id="about" class="min-h-screen relative overflow-hidden flex items-center justify-center">
 
   <div class="min-h-screen flex items-center justify-center relative z-10">
-    <div class="flex items-center justify-between p-10 gap-16">
+    <div class="flex flex-col lg:flex-row items-center justify-between p-4 md:p-10 gap-8 lg:gap-16">
 
-      <!-- Left Side: Image (Enhanced Scale & Style) -->
-      <div class="w-[300px] h-[400px] photo-frame ml-10 reveal animate-left">
+      <div class="hidden lg:block w-[350px] h-[450px] photo-frame ml-0 lg:ml-10 reveal animate-left">
         <img src="assets/holdhand.png" alt="About Image" class="photo-img w-full h-full object-cover" />
       </div>
 
-      <!-- Right Side: About Content -->
-      <div class="flex-1 flex flex-col justify-center pl-10 mr-20">
-        <p class="text-base font-bold text-[var(--color-primary)] reveal animate-right tracking-widest">
+      <div class="w-full lg:flex-1 flex flex-col justify-center pl-0 lg:pl-10 mr-0 lg:mr-10">
+        <p class="text-sm font-bold text-[var(--color-accent)] reveal animate-right tracking-widest">
           A Little Insight
         </p>
 
-        <div class="text-4xl font-bold text-[var(--color-text)] text-left reveal animate-right delay-[200ms] mt-2">
+        <div class="text-3xl font-bold text-[var(--color-primary)] text-left reveal animate-right delay-[200ms]">
           About Me
-          <div class="mt-3 border-t-2 border-[var(--color-primary)] w-20"></div>
+          <div class="mt-3 border-t-2 border-[var(--color-accent)] w-20"></div>
         </div>
 
-        <!-- Paragraph -->
         <p class="mt-5 text-base text-[var(--color-text)] text-left leading-loose reveal animate-up delay-[350ms]">
           My Name is M.Ramumanimehalai. I'm a passionate Frontend Developer with
-          3 years of experience in crafting intuitive UI designs for both web
+          3+ years of experience in crafting intuitive UI designs for both web
           and mobile applications. Skilled in API integration and frontend
           development, I've contributed to 2 mobile apps and 3 web projects,
           bringing ideas to life with clean and user-friendly interfaces.
         </p>
 
-        <!-- Info Grid (aligned with heading) -->
-        <div class="mt-6 border-2 border-[var(--color-primary)] p-6">
-          <div class="grid grid-cols-2 gap-y-5 gap-x-8">
-            <!-- Left column (3 items) -->
-            <div class="space-y-4">
-              <div class="grid grid-cols-[130px_1fr] reveal stagger-item">
-                <div class="text-base font-bold text-[var(--color-text)]">
-                  Name
-                </div>
-                <div class="text-base text-[var(--color-text)] font-medium">
-                  : M. Ramumanimehalai
-                </div>
+        <!-- Single Unified Card with "Card" Styling -->
+        <div
+          class="mt-8 p-6 md:p-8 bg-[var(--color-card)] rounded-2xl border border-[var(--color-accent)] hover:border-[var(--color-accent)] transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group reveal animate-up delay-500">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-y-4 md:gap-y-6 gap-x-12">
+
+            <!-- Name -->
+            <div class="flex items-center gap-3 lg:gap-4">
+              <div class="w-5 h-5 sm:w-7 sm:h-7 lg:w-8 lg:h-8
+           flex items-center justify-center rounded-full
+           bg-white dark:bg-gray-800
+           text-[var(--color-accent)]
+           shadow-sm border border-[var(--color-accent)]
+           shrink-0">
+                <i class="ri-user-line text-[10px] sm:text-xs lg:text-sm"></i>
               </div>
-              <div class="grid grid-cols-[130px_1fr] reveal stagger-item">
-                <div class="text-base font-bold text-[var(--color-text)]">
-                  Experience
-                </div>
-                <div class="text-base text-[var(--color-text)] font-medium">: 3 Years</div>
-              </div>
-              <div class="grid grid-cols-[130px_1fr] reveal stagger-item">
-                <div class="text-base font-bold text-[var(--color-text)]">
-                  Specialization
-                </div>
-                <div class="text-base text-[var(--color-text)] font-medium">
-                  : Web & Mobile Development
-                </div>
+              <div class="text-xs sm:text-sm lg:text-base min-w-0 break-words">
+                <span class="font-medium lg:font-semibold text-[var(--color-text)]/70">Name:</span>
+                <span class="font-normal text-[var(--color-primary)] ml-1">M. Ramumanimehalai</span>
               </div>
             </div>
 
-            <!-- Right column (2 items) -->
-            <div class="space-y-4">
-              <div class="grid grid-cols-[130px_1fr] reveal stagger-item">
-                <div class="text-base font-bold text-[var(--color-text)]">
-                  Email
-                </div>
-                <div class="text-base text-[var(--color-text)] font-medium text-wrap break-all">
-                  : ramumeha2000&#64;gmail.com
-                </div>
+            <!-- Experience -->
+            <div class="flex items-center gap-3 lg:gap-4">
+              <div class="w-5 h-5 sm:w-7 sm:h-7 lg:w-8 lg:h-8
+           flex items-center justify-center rounded-full
+           bg-white dark:bg-gray-800
+           text-[var(--color-accent)]
+           shadow-sm border border-[var(--color-accent)]
+           shrink-0">
+                <i class="ri-briefcase-line text-[10px] sm:text-xs lg:text-sm"></i>
               </div>
-              <div class="grid grid-cols-[130px_1fr] reveal stagger-item">
-                <div class="text-base font-bold text-[var(--color-text)]">
-                  Phone number
-                </div>
-                <div class="text-base text-[var(--color-text)] font-medium">: 6382526923</div>
-              </div>
-              <div class="grid grid-cols-[130px_1fr] reveal stagger-item">
-                <div class="text-base font-bold text-[var(--color-text)]">
-                  Location
-                </div>
-                <div class="text-base text-[var(--color-text)] font-medium">
-                  : Tamil Nadu, India
-                </div>
+              <div class="text-xs sm:text-sm lg:text-base min-w-0 break-words">
+                <span class="font-medium lg:font-semibold text-[var(--color-text)]/70">Experience:</span>
+                <span class="font-normal text-[var(--color-primary)] ml-1">3+ Years</span>
               </div>
             </div>
+
+            <!-- Specialization -->
+            <div class="flex items-center gap-3 lg:gap-4">
+              <div class="w-5 h-5 sm:w-7 sm:h-7 lg:w-8 lg:h-8
+           flex items-center justify-center rounded-full
+           bg-white dark:bg-gray-800
+           text-[var(--color-accent)]
+           shadow-sm border border-[var(--color-accent)]
+           shrink-0">
+                <i class="ri-code-s-slash-line text-[10px] sm:text-xs lg:text-sm"></i>
+              </div>
+
+              <div class="text-xs sm:text-sm lg:text-base min-w-0 break-words">
+                <span class="font-medium lg:font-semibold text-[var(--color-text)]/70">
+                  Specialization:
+                </span>
+                <span class="font-normal text-[var(--color-primary)] ml-1">
+                  Web & Mobile Development
+                </span>
+              </div>
+            </div>
+
+            <!-- Email -->
+            <div class="flex items-center gap-3 lg:gap-4">
+              <div class="w-5 h-5 sm:w-7 sm:h-7 lg:w-8 lg:h-8
+           flex items-center justify-center rounded-full
+           bg-white dark:bg-gray-800
+           text-[var(--color-accent)]
+           shadow-sm border border-[var(--color-accent)]
+           shrink-0">
+                <i class="ri-mail-line text-[10px] sm:text-xs lg:text-sm"></i>
+              </div>
+              <div class="text-xs sm:text-sm lg:text-base min-w-0 break-words">
+                <span class="font-medium lg:font-semibold text-[var(--color-text)]/70">Email:</span>
+                <span class="font-normal text-[var(--color-primary)] ml-1"
+                  title="ramumeha2000@gmail.com">ramumeha2000&#64;gmail.com</span>
+              </div>
+            </div>
+
+            <!-- Phone -->
+            <div class="flex items-center gap-3 lg:gap-4">
+              <div class="w-5 h-5 sm:w-7 sm:h-7 lg:w-8 lg:h-8
+           flex items-center justify-center rounded-full
+           bg-white dark:bg-gray-800
+           text-[var(--color-accent)]
+           shadow-sm border border-[var(--color-accent)]
+           shrink-0">
+                <i class="ri-phone-line text-[10px] sm:text-xs lg:text-sm"></i>
+              </div>
+              <div class="text-xs sm:text-sm lg:text-base min-w-0 break-words">
+                <span class="font-medium lg:font-semibold text-[var(--color-text)]/70">Phone:</span>
+                <span class="font-normal text-[var(--color-primary)] ml-1">6382526923</span>
+              </div>
+            </div>
+
+            <!-- Location -->
+            <div class="flex items-center gap-3 lg:gap-4">
+              <div class="w-5 h-5 sm:w-7 sm:h-7 lg:w-8 lg:h-8
+           flex items-center justify-center rounded-full
+           bg-white dark:bg-gray-800
+           text-[var(--color-accent)]
+           shadow-sm border border-[var(--color-accent)]
+           shrink-0">
+                <i class="ri-map-pin-line text-[10px] sm:text-xs lg:text-sm"></i>
+              </div>
+              <div class="text-xs sm:text-sm lg:text-base min-w-0 break-words">
+                <span class="font-medium lg:font-semibold text-[var(--color-text)]/70">Location:</span>
+                <span class="font-normal text-[var(--color-primary)] ml-1">Tamil Nadu, India</span>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
