@@ -12,7 +12,13 @@ body {
   overflow-x: hidden;
 }
 
-h1, h2, h3, h4, h5, h6, .font-heading {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.font-heading {
   font-family: 'Petrona', sans-serif;
   font-weight: 700;
 }
@@ -23,24 +29,36 @@ html {
 }
 
 :root {
-  --color-primary: #111827;      /* Gray-900 */
-  --color-bg: #ffffff;           /* Pure White for crispness */
-  --color-text: #4b5563;         /* Gray-600 */
-  --color-card: #f3f4f6;         /* Gray-100 */
-  --color-accent: #0d9488;       /* Teal-600 */
+  --color-primary: #111827;
+  /* Gray-900 */
+  --color-bg: #ffffff;
+  /* Pure White for crispness */
+  --color-text: #4b5563;
+  /* Gray-600 */
+  --color-card: #f3f4f6;
+  /* Gray-100 */
+  --color-accent: #0d9488;
+  /* Teal-600 */
   --color-accent-rgb: 13, 148, 136;
-  --color-border: #e5e7eb;       /* Gray-200 */
+  --color-border: #e5e7eb;
+  /* Gray-200 */
 }
 
 
 .dark {
-  --color-primary: #f9fafb;      /* Gray-50 */
-  --color-bg: #030712;           /* Gray-950 (Deep & Rich) */
-  --color-text: #9ca3af;         /* Gray-400 */
-  --color-card: #111827;         /* Gray-900 */
-  --color-accent: #14b8a6;       /* Teal-500 (Electric Teal) */
+  --color-primary: #f9fafb;
+  /* Gray-50 */
+  --color-bg: #030712;
+  /* Gray-950 (Deep & Rich) */
+  --color-text: #9ca3af;
+  /* Gray-400 */
+  --color-card: #111827;
+  /* Gray-900 */
+  --color-accent: #14b8a6;
+  /* Teal-500 (Electric Teal) */
   --color-accent-rgb: 20, 184, 166;
-  --color-border: #1f2937;       /* Gray-800 */
+  --color-border: #1f2937;
+  /* Gray-800 */
 }
 
 /* --- Scroll Animations --- */
@@ -62,14 +80,17 @@ html {
 /* If an element has an explicit animation class, we rely on keyframes.
    We pause the animation initially, and run it when active. */
 .reveal[class*="animate-"] {
-  opacity: 0; /* Ensure hidden initially */
+  opacity: 0;
+  /* Ensure hidden initially */
   animation-play-state: paused !important;
-  transform: none; /* Let animation handle transform */
+  transform: none;
+  /* Let animation handle transform */
 }
 
 .reveal.active[class*="animate-"] {
   animation-play-state: running !important;
-  opacity: 1; /* Ensure visible when running, though keyframes should handle it */
+  opacity: 1;
+  /* Ensure visible when running, though keyframes should handle it */
 }
 
 /* Keyframes (Global) */
@@ -79,6 +100,7 @@ html {
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -90,6 +112,7 @@ html {
     opacity: 0;
     transform: translateX(-30px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -101,6 +124,7 @@ html {
     opacity: 0;
     transform: translateX(30px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -112,6 +136,7 @@ html {
     opacity: 0;
     transform: scale(0.9);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -136,10 +161,29 @@ html {
 }
 
 /* Stagger utilities */
-.delay-100 { animation-delay: 100ms; transition-delay: 100ms; }
-.delay-200 { animation-delay: 200ms; transition-delay: 200ms; }
-.delay-300 { animation-delay: 300ms; transition-delay: 300ms; }
-.delay-400 { animation-delay: 400ms; transition-delay: 400ms; }
-.delay-500 { animation-delay: 500ms; transition-delay: 500ms; }
+.delay-100 {
+  animation-delay: 100ms;
+  transition-delay: 100ms;
+}
+
+.delay-200 {
+  animation-delay: 200ms;
+  transition-delay: 200ms;
+}
+
+.delay-300 {
+  animation-delay: 300ms;
+  transition-delay: 300ms;
+}
+
+.delay-400 {
+  animation-delay: 400ms;
+  transition-delay: 400ms;
+}
+
+.delay-500 {
+  animation-delay: 500ms;
+  transition-delay: 500ms;
+}
 
 /* Toastr Styles */
