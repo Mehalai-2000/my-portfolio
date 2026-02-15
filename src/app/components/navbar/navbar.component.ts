@@ -13,11 +13,25 @@ import { CommonModule } from '@angular/common';
 export class NavbarComponent implements AfterViewInit {
   isDarkMode = false;
   activeSection = 'home';
+  isMobileMenuOpen = false;
+  navbarEntered = false;
 
-  constructor(public themeService: ThemeService) {}
+  toggleMobileMenu() {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
+
+  closeMobileMenu() {
+    this.isMobileMenuOpen = false;
+  }
+
+  constructor(public themeService: ThemeService) { }
+
+  isScrolled = false;
 
   @HostListener('window:scroll', [])
   onWindowScroll(): void {
+    this.isScrolled = window.scrollY > 20;
+
     const sections: string[] = ['home', 'about', 'services', 'skills', 'projects', 'contact'];
     let currentSection = this.activeSection;
 
@@ -38,6 +52,11 @@ export class NavbarComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    // Trigger navbar entrance animation
+    setTimeout(() => {
+      this.navbarEntered = true;
+    }, 100);
+
     const anchors = document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]');
 
     anchors.forEach(anchor => {

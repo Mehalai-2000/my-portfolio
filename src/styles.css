@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter&family=Poppins:wght@500;700&display=swap');
+/* Font imported in index.html */
 
 @tailwind base;
 @tailwind components;
@@ -6,25 +6,184 @@
 
 body {
   background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: 'Petrona', sans-serif;
+  font-weight: 400;
+  overflow-x: hidden;
 }
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.font-heading {
+  font-family: 'Petrona', sans-serif;
+  font-weight: 700;
+}
+
+
 html {
   scroll-behavior: smooth;
 }
 
 :root {
-  --color-primary: #3A7BD5;           /* Elegant blue accent – calm and professional */
-  --color-bg: #F9FAFB;                /* Very light gray background – clean and modern */
-  --color-text: #1E293B;              /* Dark slate – perfect for readability */
-  --color-card: #FFFFFF;              /* White for clean card contrast */
-  --color-accent: #2563EB;            /* Deep royal blue accent for hover or highlights */
-  --color-border: rgba(0, 0, 0, 0.1); /* Soft subtle border */
+  --color-primary: #111827;
+  /* Gray-900 */
+  --color-bg: #ffffff;
+  /* Pure White for crispness */
+  --color-text: #4b5563;
+  /* Gray-600 */
+  --color-card: #f3f4f6;
+  /* Gray-100 */
+  --color-accent: #0d9488;
+  /* Teal-600 */
+  --color-accent-rgb: 13, 148, 136;
+  --color-border: #e5e7eb;
+  /* Gray-200 */
 }
 
+
 .dark {
-  --color-primary: #60A5FA;           /* Lighter blue for dark mode */
-  --color-bg: #0F172A;                /* Deep navy background – elegant and immersive */
-  --color-text: #F1F5F9;              /* Light gray-white text */
-  --color-card: #1E293B;              /* Dark slate surface */
-  --color-accent: #3B82F6;            /* Vivid blue for buttons and links */
-  --color-border: #334155;            /* Soft but visible border */
+  --color-primary: #f9fafb;
+  /* Gray-50 */
+  --color-bg: #030712;
+  /* Gray-950 (Deep & Rich) */
+  --color-text: #9ca3af;
+  /* Gray-400 */
+  --color-card: #111827;
+  /* Gray-900 */
+  --color-accent: #14b8a6;
+  /* Teal-500 (Electric Teal) */
+  --color-accent-rgb: 20, 184, 166;
+  --color-border: #1f2937;
+  /* Gray-800 */
 }
+
+/* --- Scroll Animations --- */
+
+/* Base class for reveal elements */
+.reveal {
+  opacity: 0;
+  transition: opacity 1.2s ease-out, transform 1.2s ease-out;
+  /* Default transformation if no specific animation is applied */
+  transform: translateY(30px);
+}
+
+/* Only run animations when 'active' class is added by the directive */
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* If an element has an explicit animation class, we rely on keyframes.
+   We pause the animation initially, and run it when active. */
+.reveal[class*="animate-"] {
+  opacity: 0;
+  /* Ensure hidden initially */
+  animation-play-state: paused !important;
+  transform: none;
+  /* Let animation handle transform */
+}
+
+.reveal.active[class*="animate-"] {
+  animation-play-state: running !important;
+  opacity: 1;
+  /* Ensure visible when running, though keyframes should handle it */
+}
+
+/* Keyframes (Global) */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Utility classes mapping to animations */
+.animate-up {
+  animation: fadeInUp 1.2s ease-out forwards;
+}
+
+.animate-left {
+  animation: fadeInLeft 1.2s ease-out forwards;
+}
+
+.animate-right {
+  animation: fadeInRight 1.2s ease-out forwards;
+}
+
+.animate-scale {
+  animation: scaleIn 1.2s ease-out forwards;
+}
+
+/* Stagger utilities */
+.delay-100 {
+  animation-delay: 100ms;
+  transition-delay: 100ms;
+}
+
+.delay-200 {
+  animation-delay: 200ms;
+  transition-delay: 200ms;
+}
+
+.delay-300 {
+  animation-delay: 300ms;
+  transition-delay: 300ms;
+}
+
+.delay-400 {
+  animation-delay: 400ms;
+  transition-delay: 400ms;
+}
+
+.delay-500 {
+  animation-delay: 500ms;
+  transition-delay: 500ms;
+}
+
+/* Toastr Styles */

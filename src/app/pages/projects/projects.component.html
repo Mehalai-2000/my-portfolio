@@ -1,85 +1,69 @@
-<section class="w-full min-h-screen flex flex-col justify-center bg-[var(--color-bg)] px-20 py-16">
-    <div class="mb-5 text-left">
-        <p class="text-sm font-semibold tracking-wider text-[var(--color-primary)] mb-1"
-            style="font-family: 'DM Sans', sans-serif;">
+<section class="w-full min-h-screen flex flex-col justify-center bg-[var(--color-bg)] px-6 md:px-20 py-16">
+
+    <div class="w-full max-w-7xl mx-auto flex flex-col justify-center mb-0 text-left mt-10">
+        <p class="text-sm font-bold text-[var(--color-accent)] reveal animate-right tracking-widest">
             My Creations
         </p>
-
-        <h2 class="text-3xl font-bold text-[var(--color-text)]" style="font-family: 'Poppins', sans-serif;">
+        <div class="text-4xl font-bold text-[var(--color-primary)] text-left reveal animate-right delay-[200ms]">
             Latest Projects
-        </h2>
-
-        <div class="mt-2 border-t-2 border-[var(--color-primary)] w-16"></div>
+            <div class="mt-3 border-t-2 border-[var(--color-accent)] w-20"></div>
+        </div>
     </div>
 
-    <!-- Responsive cards container -->
-    <div class="w-full flex flex-wrap justify-center gap-8">
-
-        <!-- Card 1 -->
+    <div class="w-full flex flex-wrap justify-center gap-8 mt-10 pb-12">
+        @for (project of projects; track project.title) {
         <div
-            class="w-full sm:w-[400px] md:w-[350px] bg-[var(--color-card)] rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition transform hover:scale-105">
-            <img src="assets/volt(1).png" alt="VOLT Admin Portal" class="w-full h-65 object-scale-down" />
+            class="group relative w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.334rem)] bg-[#f8fafc] dark:bg-[#1e293b] rounded-2xl overflow-hidden shadow-md hover:shadow-2xl hover:shadow-teal-900/10 transition-all duration-500 hover:-translate-y-2 border border-slate-200 dark:border-slate-700 flex flex-col reveal animate-up">
 
-            <div class="p-4 flex flex-col">
-                <h3 class="text-lg font-bold text-[var(--color-text)] mb-2">VOLT Admin Portal</h3>
+            <!-- Top Accent Line -->
+            <div class="h-1.5 w-full bg-[var(--color-accent)]"></div>
 
-                <p class="text-xs text-gray-400 leading-relaxed mb-2">
-                    An admin dashboard for the VOLT banking application, providing user management, transaction
-                    monitoring, analytics, and administrative controls. Contributed to UI design and dashboard
-                    functionality.
-                    <a href="#" class="italic text-[var(--color-primary)] underline cursor-not-allowed opacity-70"
-                        title="Coming Soon">
-                        *Visit Project*
+            <!-- Image Section -->
+            <div class="relative h-52 w-full overflow-hidden bg-slate-200">
+                <img [src]="project.image" [alt]="project.title"
+                    class="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-110">
+
+                <!-- Overlay with Button -->
+                @if (project.link) {
+                <div
+                    class="absolute inset-0 bg-slate-900/20 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-10">
+                    <a [href]="project.link" target="_blank"
+                        class="px-6 py-2.5 bg-gradient-to-r from-teal-500 to-teal-700 text-white text-sm font-semibold rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 hover:scale-105 hover:shadow-teal-500/30 flex items-center gap-2">
+                        View Project
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-external-link">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                            <polyline points="15 3 21 3 21 9" />
+                            <line x1="10" y1="14" x2="21" y2="3" />
+                        </svg>
                     </a>
+                </div>
+                }
+            </div>
+
+            <!-- Content Section -->
+            <div class="p-6 flex flex-col flex-grow relative">
+                <h3
+                    class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-2 group-hover:text-teal-600 transition-colors">
+                    {{project.title}}
+                </h3>
+
+                <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-4 line-clamp-3">
+                    {{project.description}}
                 </p>
 
-                <p class="text-xs text-gray-500">
-                    <span class="font-medium text-[var(--color-text)]">Tech Stack:</span> Angular, Bootstrap, REST API
-                </p>
+                <!-- Tags / Tech -->
+                <div class="mt-auto pt-4 border-t border-[var(--color-accent)]/20 flex flex-wrap gap-2">
+                    @for (item of project.tech; track item) {
+                    <span
+                        class="px-3 py-1 text-[11px] font-bold tracking-wider uppercase bg-[#0d9488] text-white rounded-md transition-all duration-300 hover:bg-[#0f766e] hover:-translate-y-0.5 hover:shadow-lg cursor-default select-none shadow-md">
+                        {{item}}
+                    </span>
+                    }
+                </div>
             </div>
         </div>
-
-        <!-- Card 2 -->
-        <div
-            class="w-full sm:w-[400px] md:w-[350px] bg-[var(--color-card)] rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition transform hover:scale-105">
-            <img src="assets/mobile-mockups.png" alt="Project Next" class="w-full h-65 object-scale-down" />
-            <div class="p-4 flex flex-col">
-                <h3 class="text-lg font-bold text-[var(--color-text)] mb-2">Project Next</h3>
-                <p class="text-xs text-gray-400 leading-relaxed mb-2">
-                    A construction management mobile app developed to monitor and manage ongoing
-                    projects, workforce details, and daily tasks.
-                    <span class="italic text-[var(--color-primary)]">*Internal Application*</span>
-                </p>
-                <p class="text-xs text-gray-500">
-                    <span class="font-medium text-[var(--color-text)]">Tech Stack:</span>
-                    React Native, Expo, REST API
-                </p>
-            </div>
-        </div>
-
-
-        <!-- Card 3 -->
-        <div
-            class="w-full sm:w-[400px] md:w-[350px] bg-[var(--color-card)] rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition transform hover:scale-105">
-
-            <img src="assets/fintuit(1).png" alt="ZubeLife App" class="w-full h-65 object-scale-down" />
-
-            <div class="p-4 flex flex-col">
-                <h3 class="text-lg font-bold text-[var(--color-text)] mb-2">ZubeLife</h3>
-
-                <p class="text-xs text-gray-400 leading-relaxed mb-2">
-                    A banking app to manage accounts, transactions, budgets, and savings. Includes tabs for account
-                    overview, expenses, and real-time updates. Contributed to UI design and testing.
-                    <a href="https://zube.life/" target="_blank" class="italic text-[var(--color-primary)] underline">
-                        *Visit Project*
-                    </a>
-                </p>
-
-                <p class="text-xs text-gray-500">
-                    <span class="font-medium text-[var(--color-text)]">Tech Stack:</span>
-                    Angular, Expo, REST API
-                </p>
-            </div>
-        </div>
+        }
     </div>
 </section>
