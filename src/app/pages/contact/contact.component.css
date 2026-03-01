@@ -83,12 +83,26 @@
   /* Slate-50 */
   border: 1px solid rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(8px);
+  color-scheme: dark;
 }
 
 :host-context(html.dark) .custom-input:focus {
   background-color: rgba(30, 41, 59, 0.8);
   border-color: #0d9488;
   box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.2);
+}
+
+/* Fix browser autofill white background override in dark mode */
+:host-context(html.dark) .custom-input:-webkit-autofill,
+:host-context(html.dark) .custom-input:-webkit-autofill:hover,
+:host-context(html.dark) .custom-input:-webkit-autofill:focus,
+:host-context(html.dark) .custom-input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #1e293b inset !important;
+  box-shadow: 0 0 0 1000px #1e293b inset !important;
+  -webkit-text-fill-color: #f8fafc !important;
+  caret-color: #f8fafc;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  transition: background-color 5000s ease-in-out 0s;
 }
 
 /* 
