@@ -4,16 +4,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ramumanimehalai - Frontend Developer</title>
+  <title>Ramumanimehalai — Angular & Frontend Developer</title>
+  <meta name="description"
+    content="Premium portfolio of Ramumanimehalai M, Angular & Frontend Developer with 3+ years of experience building scalable web applications.">
   <link rel="icon" type="image/png" href="assets/letter-r.png">
 
-  <!-- Optional CDN link for Lucide Icons -->
+  <!-- Lucide Icons CDN -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide@latest/dist/lucide.min.css">
+  <!-- RemixIcon -->
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <!-- Google Fonts: Petrona + Sora + Dancing Script -->
   <link
     href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Petrona:ital,wght@0,100..900;1,100..900&family=Sora:wght@100..800&display=swap"
     rel="stylesheet">
 
+  <style>
+    /* Prevent flash of white before Angular bootstraps */
+    html,
+    body {
+      background: #000000;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Show hero background immediately */
+    #home {
+      background-color: #000000;
+    }
+  </style>
 </head>
 
 <body class="bg-lightBg text-primaryText dark:bg-darkBg dark:text-darkText font-body">

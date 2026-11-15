@@ -1,15 +1,62 @@
-/* Font imported in index.html */
+/* ═══════════════════════════════════════════════════════════════
+   GLOBAL STYLES — Cinematic Portfolio
+   ═══════════════════════════════════════════════════════════════ */
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ── Google Fonts already loaded via index.html ────────────────── */
+
+/* ── Root CSS variables ───────────────────────────────────────── */
+:root {
+  /* Light theme (used by other sections) */
+  --color-primary: #111827;
+  --color-bg: #ffffff;
+  --color-text: #4b5563;
+  --color-card: #f3f4f6;
+  --color-accent: #0d9488;
+  --color-accent-rgb: 13, 148, 136;
+  --color-border: #e5e7eb;
+
+  /* Cinematic/Emerald Noir tokens (available globally for future sections) */
+  --en-bg: #071510;
+  --en-deep-em: #064D40;
+  --en-champagne: #D6B477;
+  --en-champagne-r: 214, 180, 119;
+  --en-text: #F5F0E6;
+}
+
+.dark {
+  --color-primary: #f9fafb;
+  --color-bg: #030712;
+  --color-text: #9ca3af;
+  --color-card: #111827;
+  --color-accent: #14b8a6;
+  --color-accent-rgb: 20, 184, 166;
+  --color-border: #1f2937;
+}
+
+/* ── Base ─────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+
 body {
   background-color: var(--color-bg);
   color: var(--color-text);
-  font-family: 'Petrona', sans-serif;
+  font-family: 'Petrona', serif;
   font-weight: 400;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
 h1,
@@ -19,86 +66,50 @@ h4,
 h5,
 h6,
 .font-heading {
-  font-family: 'Petrona', sans-serif;
+  font-family: 'Petrona', serif;
   font-weight: 700;
 }
 
-
-html {
-  scroll-behavior: smooth;
+#home {
+  background-color: #000000 !important;
+  color: #FFFFFF !important;
+  overflow: hidden;
 }
 
-:root {
-  --color-primary: #111827;
-  /* Gray-900 */
-  --color-bg: #ffffff;
-  /* Pure White for crispness */
-  --color-text: #4b5563;
-  /* Gray-600 */
-  --color-card: #f3f4f6;
-  /* Gray-100 */
-  --color-accent: #0d9488;
-  /* Teal-600 */
-  --color-accent-rgb: 13, 148, 136;
-  --color-border: #e5e7eb;
-  /* Gray-200 */
+app-home {
+  display: block;
+  width: 100%;
 }
 
-
-.dark {
-  --color-primary: #f9fafb;
-  /* Gray-50 */
-  --color-bg: #030712;
-  /* Gray-950 (Deep & Rich) */
-  --color-text: #9ca3af;
-  /* Gray-400 */
-  --color-card: #111827;
-  /* Gray-900 */
-  --color-accent: #14b8a6;
-  /* Teal-500 (Electric Teal) */
-  --color-accent-rgb: 20, 184, 166;
-  --color-border: #1f2937;
-  /* Gray-800 */
-}
-
-/* --- Scroll Animations --- */
-
-/* Base class for reveal elements */
+/* ── Scroll animations (for other sections) ──────────────────── */
 .reveal {
   opacity: 0;
-  transition: opacity 1.2s ease-out, transform 1.2s ease-out;
-  /* Default transformation if no specific animation is applied */
-  transform: translateY(30px);
+  transition: opacity 1.1s ease-out, transform 1.1s ease-out;
+  transform: translateY(28px);
 }
 
-/* Only run animations when 'active' class is added by the directive */
 .reveal.active {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* If an element has an explicit animation class, we rely on keyframes.
-   We pause the animation initially, and run it when active. */
 .reveal[class*="animate-"] {
   opacity: 0;
-  /* Ensure hidden initially */
   animation-play-state: paused !important;
   transform: none;
-  /* Let animation handle transform */
 }
 
 .reveal.active[class*="animate-"] {
   animation-play-state: running !important;
   opacity: 1;
-  /* Ensure visible when running, though keyframes should handle it */
 }
 
-/* Keyframes (Global) */
-
+/* Global keyframes used by other sections */
 @keyframes fadeInUp {
+
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(28px);
   }
 
   to {
@@ -110,7 +121,7 @@ html {
 @keyframes fadeInLeft {
   from {
     opacity: 0;
-    transform: translateX(-30px);
+    transform: translateX(-28px);
   }
 
   to {
@@ -120,9 +131,10 @@ html {
 }
 
 @keyframes fadeInRight {
+
   from {
     opacity: 0;
-    transform: translateX(30px);
+    transform: translateX(28px);
   }
 
   to {
@@ -132,9 +144,10 @@ html {
 }
 
 @keyframes scaleIn {
+
   from {
     opacity: 0;
-    transform: scale(0.9);
+    transform: scale(.9);
   }
 
   to {
@@ -143,24 +156,25 @@ html {
   }
 }
 
-/* Utility classes mapping to animations */
+
 .animate-up {
-  animation: fadeInUp 1.2s ease-out forwards;
+  animation: fadeInUp 1.1s ease-out forwards;
 }
 
 .animate-left {
-  animation: fadeInLeft 1.2s ease-out forwards;
+  animation: fadeInLeft 1.1s ease-out forwards;
 }
 
 .animate-right {
-  animation: fadeInRight 1.2s ease-out forwards;
+  animation: fadeInRight 1.1s ease-out forwards;
 }
 
 .animate-scale {
-  animation: scaleIn 1.2s ease-out forwards;
+  animation: scaleIn 1.1s ease-out forwards;
 }
 
-/* Stagger utilities */
+
+/* Delay utilities */
 .delay-100 {
   animation-delay: 100ms;
   transition-delay: 100ms;
@@ -186,4 +200,26 @@ html {
   transition-delay: 500ms;
 }
 
-/* Toastr Styles */
+/* ── Custom scrollbar (Webkit) ────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-accent);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary);
+}
+
+/* ── Selection colour ─────────────────────────────────────────── */
+::selection {
+  background: rgba(13, 148, 136, .25);
+  color: var(--color-primary);
+}
