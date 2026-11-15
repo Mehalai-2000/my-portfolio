@@ -313,6 +313,9 @@
   justify-content: center;
   background-color: #000000;
   z-index: 2;
+  /* Organic feathering mask that completely dissolves rectangular box edges into pure black */
+  -webkit-mask-image: radial-gradient(ellipse 92% 88% at 50% 50%, #000000 68%, transparent 100%);
+  mask-image: radial-gradient(ellipse 92% 88% at 50% 50%, #000000 68%, transparent 100%);
 }
 
 /* ── High-Performance 60FPS Single HTML Canvas Renderer ───────── */
@@ -331,13 +334,15 @@
   inset: 0;
   margin: auto;
   z-index: 1;
-  transition: opacity 0.25s ease;
+  opacity: 1;
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  -webkit-mask-image: radial-gradient(ellipse 92% 88% at 50% 50%, #000000 68%, transparent 100%);
+  mask-image: radial-gradient(ellipse 92% 88% at 50% 50%, #000000 68%, transparent 100%);
 }
 
 .cinematic-canvas.canvas-hidden {
   opacity: 0;
   pointer-events: none;
-  visibility: hidden;
 }
 
 /* ── Talk Video Stream (English Audio) ───────────────────────── */
@@ -358,13 +363,15 @@
   inset: 0;
   margin: auto;
   z-index: 2;
-  transition: opacity 0.25s ease;
+  opacity: 1;
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  -webkit-mask-image: radial-gradient(ellipse 92% 88% at 50% 50%, #000000 68%, transparent 100%);
+  mask-image: radial-gradient(ellipse 92% 88% at 50% 50%, #000000 68%, transparent 100%);
 }
 
 .cinematic-video.video-hidden {
   opacity: 0;
   pointer-events: none;
-  display: none !important;
 }
 
 /* ── Tap to play hint (if autoplay was blocked) ────────────────── */

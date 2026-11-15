@@ -155,18 +155,18 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
         scaffoldIndices.push(this.TOTAL_FRAMES - 1);
       }
 
-      const loadScaffoldBatch = async () => {
-        for (const idx of scaffoldIndices) {
-          if (this.destroyed) return;
-          await this.loadSingleFrame(idx).catch(() => { });
-        }
+        const loadScaffoldBatch = async () => {
+          for (const idx of scaffoldIndices) {
+            if (this.destroyed) return;
+            await this.loadSingleFrame(idx).catch(() => { });
+          }
 
-        // Phase 3: Fill remaining intermediate frames progressively
-        this.streamRemainingFrames();
-      };
+          // Phase 3: Fill remaining intermediate frames progressively
+          this.streamRemainingFrames();
+        };
 
-      loadScaffoldBatch();
-    });
+        loadScaffoldBatch();
+      });
   }
 
   // ── Stream Remaining Frames in Batches ──────────────────────────
@@ -211,7 +211,7 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
       pin: true,
       invalidateOnRefresh: true,
       onUpdate: (self) => {
-        if (this.destroyed || this.isTalkPlaying) return;
+        if (this.destroyed) return;
         // Map 0 to 1 directly to frame indexes (0 to TOTAL_FRAMES - 1)
         this.targetFrameIndex = Math.min(
           this.TOTAL_FRAMES - 1,
@@ -228,128 +228,137 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
     const render = () => {
       if (this.destroyed) return;
 
-      if (!this.isTalkPlaying) {
         const diff = this.targetFrameIndex - this.currentInterpolatedFrame;
         if (Math.abs(diff) > 0.05) {
           // Responsive lerp without noticeable lag
           this.currentInterpolatedFrame += diff * 0.28;
           const frameToRender = Math.round(this.currentInterpolatedFrame);
 
-          if (frameToRender !== this.lastRenderedIndex) {
-            this.renderFrame(frameToRender);
-            this.lastRenderedIndex = frameToRender;
-          }
-        } else if (this.lastRenderedIndex !== this.targetFrameIndex) {
-          this.currentInterpolatedFrame = this.targetFrameIndex;
-          this.renderFrame(this.targetFrameIndex);
-          this.lastRenderedIndex = this.targetFrameIndex;
+        if (frameToRender !== this.lastRenderedIndex) {
+          this.renderFrame(frameToRender);
+          this.lastRenderedIndex = frameToRender;
         }
+      } else if (this.lastRenderedIndex !== this.targetFrameIndex) {
+        this.currentInterpolatedFrame = this.targetFrameIndex;
+        this.renderFrame(this.targetFrameIndex);
+        this.lastRenderedIndex = this.targetFrameIndex;
       }
 
-      this.rafId = requestAnimationFrame(render);
-    };
-
     this.rafId = requestAnimationFrame(render);
+  };
+
+this.rafId = requestAnimationFrame(render);
   }
 
   // ── Render Frame on Canvas ──────────────────────────────────────
   private renderFrame(index: number): void {
-    if (!this.ctx) return;
+  if(!this.ctx) return;
 
-    const img = this.images[index] || this.findNearestLoadedFrame(index);
-    if (img && img.complete && img.naturalWidth > 0) {
-      // Clear canvas with studio pure black
-      this.ctx.fillStyle = '#000000';
-      this.ctx.fillRect(0, 0, this.CANVAS_WIDTH, this.CANVAS_HEIGHT);
+  const img = this.images[index] || this.findNearestLoadedFrame(index);
+  if(img && img.complete && img.naturalWidth > 0) {
+  // Clear canvas with studio pure black
+  this.ctx.fillStyle = '#000000';
+  this.ctx.fillRect(0, 0, this.CANVAS_WIDTH, this.CANVAS_HEIGHT);
 
-      // Preserve the complete video frame without any cropping or stretching
-      const imgRatio = img.naturalWidth / img.naturalHeight;
-      const canvasRatio = this.CANVAS_WIDTH / this.CANVAS_HEIGHT;
+  // Preserve the complete video frame without any cropping or stretching
+  const imgRatio = img.naturalWidth / img.naturalHeight;
+  const canvasRatio = this.CANVAS_WIDTH / this.CANVAS_HEIGHT;
 
-      if (Math.abs(imgRatio - canvasRatio) < 0.002) {
-        this.ctx.drawImage(img, 0, 0, this.CANVAS_WIDTH, this.CANVAS_HEIGHT);
-      } else if (imgRatio > canvasRatio) {
-        const drawHeight = this.CANVAS_WIDTH / imgRatio;
-        const drawY = (this.CANVAS_HEIGHT - drawHeight) / 2;
-        this.ctx.drawImage(img, 0, drawY, this.CANVAS_WIDTH, drawHeight);
-      } else {
-        const drawWidth = this.CANVAS_HEIGHT * imgRatio;
-        const drawX = (this.CANVAS_WIDTH - drawWidth) / 2;
-        this.ctx.drawImage(img, drawX, 0, drawWidth, this.CANVAS_HEIGHT);
-      }
-    }
+  if (Math.abs(imgRatio - canvasRatio) < 0.002) {
+    this.ctx.drawImage(img, 0, 0, this.CANVAS_WIDTH, this.CANVAS_HEIGHT);
+  } else if (imgRatio > canvasRatio) {
+    const drawHeight = this.CANVAS_WIDTH / imgRatio;
+    const drawY = (this.CANVAS_HEIGHT - drawHeight) / 2;
+    this.ctx.drawImage(img, 0, drawY, this.CANVAS_WIDTH, drawHeight);
+  } else {
+    const drawWidth = this.CANVAS_HEIGHT * imgRatio;
+    const drawX = (this.CANVAS_WIDTH - drawWidth) / 2;
+    this.ctx.drawImage(img, drawX, 0, drawWidth, this.CANVAS_HEIGHT);
+  }
+}
   }
 
   // ── Nearest Frame Fallback (Zero Blanking) ──────────────────────
   private findNearestLoadedFrame(index: number): HTMLImageElement | null {
-    if (this.loadedIndices.size === 0) return null;
-    if (this.images[index]) return this.images[index];
+  if (this.loadedIndices.size === 0) return null;
+  if (this.images[index]) return this.images[index];
 
-    for (let offset = 1; offset < this.TOTAL_FRAMES; offset++) {
-      const left = index - offset;
-      if (left >= 0 && this.images[left]) return this.images[left];
+  for (let offset = 1; offset < this.TOTAL_FRAMES; offset++) {
+    const left = index - offset;
+    if (left >= 0 && this.images[left]) return this.images[left];
 
-      const right = index + offset;
-      if (right < this.TOTAL_FRAMES && this.images[right]) return this.images[right];
-    }
-
-    return null;
+    const right = index + offset;
+    if (right < this.TOTAL_FRAMES && this.images[right]) return this.images[right];
   }
+
+  return null;
+}
 
   // ── Talk Video Initialization ───────────────────────────────────
   private initTalkVideo(): void {
-    const talk = this.talkVideoRef?.nativeElement;
-    if (!talk) return;
+  const talk = this.talkVideoRef?.nativeElement;
+  if(!talk) return;
 
-    talk.muted = false;
-    talk.playbackRate = 1.0;
+  talk.preload = 'auto';
+  talk.load();
 
-    this.talkEndedHandler = () => {
-      this.zone.run(() => {
-        this.isTalkPlaying = false;
-        this.talkButtonLabel = 'REPLAY INTRODUCTION';
-      });
+  this.talkEndedHandler = () => {
+    this.zone.run(() => {
+      this.isTalkPlaying = false;
+      this.talkButtonLabel = 'REPLAY INTRODUCTION';
+    });
 
-      // Ensure canvas re-renders the current scroll position
-      this.zone.runOutsideAngular(() => {
-        this.renderFrame(this.lastRenderedIndex >= 0 ? this.lastRenderedIndex : 0);
-      });
-    };
+    // Ensure canvas immediately displays the current scroll frame seamlessly
+    this.zone.runOutsideAngular(() => {
+      this.renderFrame(this.lastRenderedIndex >= 0 ? this.lastRenderedIndex : 0);
+    });
+  };
 
-    talk.addEventListener('ended', this.talkEndedHandler);
-  }
+  talk.addEventListener('ended', this.talkEndedHandler);
+}
 
-  // ── Talk Button Click Handler ───────────────────────────────────
-  onTalkButtonClick(): void {
-    if (this.isTalkPlaying) return;
-    this.startTalkVideo();
-  }
+// ── Talk Button Click Handler ───────────────────────────────────
+onTalkButtonClick(): void {
+  if(this.isTalkPlaying) return;
+  this.startTalkVideo();
+}
 
   // ── Start Talk Video ────────────────────────────────────────────
   private startTalkVideo(): void {
-    const talk = this.talkVideoRef?.nativeElement;
-    if (!talk) return;
+  const talk = this.talkVideoRef?.nativeElement;
+  if(!talk) return;
 
-    this.isTalkPlaying = true;
-    this.talkButtonLabel = 'LISTENING...';
+  this.talkButtonLabel = 'STARTING...';
+  talk.currentTime = 0;
+  talk.muted = false;
+  talk.playbackRate = 1.0;
 
-    talk.currentTime = 0;
-    talk.muted = false;
-    talk.playbackRate = 1.0;
-
-    talk.play().catch(err => {
-      console.warn('Playback error on talk video:', err);
-      talk.muted = true;
-      talk.play().catch(() => { });
+  // Listen for the first frame actually playing before hiding canvas (prevents black flash)
+  talk.addEventListener('playing', () => {
+    this.zone.run(() => {
+      this.isTalkPlaying = true;
+      this.talkButtonLabel = 'LISTENING...';
     });
-  }
+  }, { once: true });
 
-  // ── Smooth Scroll Navigation ────────────────────────────────────
-  scrollTo(sectionId: string, event: Event): void {
-    event.preventDefault();
-    const el = document.getElementById(sectionId);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+  talk.play().catch(err => {
+    console.warn('Playback error on talk video:', err);
+    talk.muted = true;
+    talk.play().catch(() => {
+      this.zone.run(() => {
+        this.isTalkPlaying = false;
+        this.talkButtonLabel = 'TALK TO ME';
+      });
+    });
+  });
+}
+
+// ── Smooth Scroll Navigation ────────────────────────────────────
+scrollTo(sectionId: string, event: Event): void {
+  event.preventDefault();
+  const el = document.getElementById(sectionId);
+  if(el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
+}
 }

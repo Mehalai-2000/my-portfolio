@@ -40,11 +40,11 @@
         <!-- Primary Button: VIEW MY WORK -->
         <a href="#projects" class="btn-primary" (click)="scrollTo('projects', $event)">
           <span>VIEW MY WORK</span>
-            <svg width="14" height="14" style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <line x1="7" y1="17" x2="17" y2="7"></line>
-              <polyline points="7 7 17 7 17 17"></polyline>
-            </svg>
+          <svg width="14" height="14" style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="7" y1="17" x2="17" y2="7"></line>
+            <polyline points="7 7 17 7 17 17"></polyline>
+          </svg>
         </a>
 
         <!-- Secondary Button: TALK TO ME -->
@@ -60,13 +60,13 @@
             </span>
             } @else {
             <!-- Mic Icon -->
-              <svg width="14" height="14" style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 2a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z" />
-                <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
-                <line x1="12" y1="19" x2="12" y2="22" />
-              </svg>
-              }
+            <svg width="14" height="14" style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z" />
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+              <line x1="12" y1="19" x2="12" y2="22" />
+            </svg>
+            }
           </span>
 
           <span>{{ talkButtonLabel }}</span>
@@ -95,19 +95,24 @@
     <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
          RIGHT SIDE — CINEMATIC CHARACTER (~65%)
          60FPS Single HTML Canvas Sequence Renderer
+         Seamless Talk Video Integration
          ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
-      <div class="hero-character-stage">
+    <div class="hero-character-stage">
 
-        <!-- ── SINGLE HTML CANVAS: Ultra-responsive 60FPS scroll animation ── -->
-        <canvas #heroCanvas class="cinematic-canvas" [class.canvas-hidden]="isTalkPlaying"
-          aria-label="Cinematic developer introduction of Ramumanimehalai">
-        </canvas>
+      <!-- ── SINGLE HTML CANVAS: Ultra-responsive 60FPS scroll animation ── -->
+      <canvas #heroCanvas class="cinematic-canvas"
+        [class.canvas-hidden]="isTalkPlaying"
+        aria-label="Cinematic developer introduction of Ramumanimehalai">
+      </canvas>
 
-        <!-- ── TALK VIDEO: Seamless transition with English audio on Talk to Me click ── -->
-        <video #talkVideo class="cinematic-video" [class.video-hidden]="!isTalkPlaying" src="/videos/portfolio_talk.mp4"
-          playsinline preload="auto" disablePictureInPicture
-          [attr.aria-label]="'Audio introduction video of Ramumanimehalai'">
-        </video>
+      <!-- ── TALK VIDEO: Seamlessly plays portfolio_talk.mp4 when Talk to Me is clicked ── -->
+      <video #talkVideo class="cinematic-video"
+        [class.video-hidden]="!isTalkPlaying"
+        src="/videos/portfolio_talk.mp4"
+        playsinline preload="auto"
+        disablePictureInPicture
+        [attr.aria-label]="'Audio introduction video of Ramumanimehalai'">
+      </video>
 
     </div>
 
