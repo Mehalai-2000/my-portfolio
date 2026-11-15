@@ -73,12 +73,17 @@ h6,
 #home {
   background-color: #000000 !important;
   color: #FFFFFF !important;
-  overflow: hidden;
+  position: relative;
+}
+
+.pin-spacer {
+  background-color: #000000 !important;
 }
 
 app-home {
   display: block;
   width: 100%;
+  background-color: #000000;
 }
 
 /* ── Scroll animations (for other sections) ──────────────────── */

@@ -1,19 +1,16 @@
 <!-- ═══════════════════════════════════════════════════════════════
-     ULTRA-REALISTIC CINEMATIC HERO SECTION
-     Background: Pure Black Studio (#000000)
-     Left: Minimalist Portfolio Content (~45%)
-     Right: Cinematic AI Character Studio Video (~55%)
+     PREMIUM CINEMATIC HERO SECTION
+     Theme: Pure Black Studio (#000000) · Warm Gold Accents (#D6B477)
+     Layout: Compact Left Content (35%) · Large Cinematic Video (65%)
+     Ultra-Smooth 60FPS Single HTML Canvas Image Sequence
      ═══════════════════════════════════════════════════════════════ -->
-<div class="cinematic-hero" aria-label="Cinematic Hero Section">
+<div class="cinematic-hero" #heroSection aria-label="Cinematic Hero Section">
 
-  <!-- Subtle Warm Golden Ambient Studio Lighting -->
-  <div class="ambient-gold-glow" aria-hidden="true"></div>
-
-  <!-- Main Hero Grid (45% Content / 55% Character) -->
+  <!-- Main Hero Grid (35% Content / 65% Character) -->
   <div class="hero-layout">
 
     <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-         LEFT SIDE — PORTFOLIO CONTENT (~45%)
+         LEFT SIDE — PORTFOLIO CONTENT (~35%)
          ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
     <div class="hero-content">
 
@@ -43,11 +40,11 @@
         <!-- Primary Button: VIEW MY WORK -->
         <a href="#projects" class="btn-primary" (click)="scrollTo('projects', $event)">
           <span>VIEW MY WORK</span>
-          <svg width="14" height="14" style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <line x1="7" y1="17" x2="17" y2="7"></line>
-            <polyline points="7 7 17 7 17 17"></polyline>
-          </svg>
+            <svg width="14" height="14" style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="7" y1="17" x2="17" y2="7"></line>
+              <polyline points="7 7 17 7 17 17"></polyline>
+            </svg>
         </a>
 
         <!-- Secondary Button: TALK TO ME -->
@@ -63,13 +60,13 @@
             </span>
             } @else {
             <!-- Mic Icon -->
-            <svg width="14" height="14" style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z" />
-              <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
-              <line x1="12" y1="19" x2="12" y2="22" />
-            </svg>
-            }
+              <svg width="14" height="14" style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z" />
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                <line x1="12" y1="19" x2="12" y2="22" />
+              </svg>
+              }
           </span>
 
           <span>{{ talkButtonLabel }}</span>
@@ -96,41 +93,29 @@
     </div>
 
     <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-         RIGHT SIDE — CINEMATIC CHARACTER (~55%)
-         Original AI-generated cinematic footage
-         Seamlessly blending into the pure black backdrop
+         RIGHT SIDE — CINEMATIC CHARACTER (~65%)
+         60FPS Single HTML Canvas Sequence Renderer
          ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
-    <div class="hero-character-stage" (click)="onStageClick()">
+      <div class="hero-character-stage">
 
-      <!-- ── MAIN VIDEO: Autoplays muted, freezes on last seated frame ── -->
-      <video #mainVideo class="cinematic-video" src="/videos/portfolio_main.mp4" muted playsinline preload="auto"
-        disablePictureInPicture [attr.aria-label]="'Introduction video of Ramumanimehalai'">
-      </video>
+        <!-- ── SINGLE HTML CANVAS: Ultra-responsive 60FPS scroll animation ── -->
+        <canvas #heroCanvas class="cinematic-canvas" [class.canvas-hidden]="isTalkPlaying"
+          aria-label="Cinematic developer introduction of Ramumanimehalai">
+        </canvas>
 
-      <!-- ── TALK VIDEO: Plays with English audio on Talk to Me click ── -->
-      <video #talkVideo class="cinematic-video video-hidden" src="/videos/portfolio_talk.mp4" playsinline preload="auto"
-        disablePictureInPicture [attr.aria-label]="'Audio introduction video of Ramumanimehalai'">
-      </video>
-
-      <!-- Tap to Play prompt if browser blocks initial muted autoplay -->
-      @if (showPlayHint) {
-      <div class="autoplay-hint" aria-live="polite">
-        <div class="play-circle">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-            <polygon points="5 3 19 12 5 21 5 3" />
-          </svg>
-        </div>
-        <span>TAP TO PLAY</span>
-      </div>
-      }
+        <!-- ── TALK VIDEO: Seamless transition with English audio on Talk to Me click ── -->
+        <video #talkVideo class="cinematic-video" [class.video-hidden]="!isTalkPlaying" src="/videos/portfolio_talk.mp4"
+          playsinline preload="auto" disablePictureInPicture
+          [attr.aria-label]="'Audio introduction video of Ramumanimehalai'">
+        </video>
 
     </div>
 
   </div>
 
   <!-- Subtle Minimalist Scroll Indicator -->
-  <a href="#about" class="hero-scroll" (click)="scrollTo('about', $event)" aria-label="Scroll to content">
-    <span class="scroll-label">SCROLL</span>
+  <a href="#about" class="hero-scroll" (click)="scrollTo('about', $event)" aria-label="Scroll to explore">
+    <span class="scroll-label">SCROLL TO EXPLORE</span>
     <div class="scroll-track">
       <div class="scroll-dot"></div>
     </div>
