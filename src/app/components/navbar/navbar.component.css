@@ -1,7 +1,7 @@
 /* ═══════════════════════════════════════════════════════════════
-   PREMIUM CINEMATIC GLASSMORPHISM FLOATING NAVBAR
-   Theme: Pure Black Studio & Warm Champagne Gold (#D6B477)
-   Self-Contained Glass Capsule · 100% Viewport-Bounded
+   PREMIUM CINEMATIC FLOATING NAVIGATION BAR
+   Theme: Pure Black Studio (#000000) & Warm Gold (#D6B477)
+   Compact, slim, elegant glassmorphism bar
    ═══════════════════════════════════════════════════════════════ */
 
 :host {
@@ -11,110 +11,119 @@
   width: 100%;
 }
 
-/* ── Fixed Floating Header (Strictly within Viewport) ──────────── */
+/* ── Floating Header Wrapper (Strictly Viewport Bounded) ────────── */
 .cinematic-header {
   position: fixed;
-  top: 1rem;
+  top: 0.75rem;
   left: 50%;
   transform: translateX(-50%);
-  width: min(1300px, calc(100% - 2.5rem));
+  width: min(1080px, calc(100% - 2rem));
   z-index: 100;
   box-sizing: border-box;
-  pointer-events: auto;
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  transition: top 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .cinematic-header.is-scrolled {
-  top: 0.65rem;
+  top: 0.5rem;
 }
 
-/* ── Floating Glass Capsule Container ─────────────────────────── */
+/* ── Floating Glassmorphism Island Container ───────────────────── */
 .header-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 0.55rem 1.4rem;
+  padding: 0.38rem 1.15rem;
   box-sizing: border-box;
-  background: rgba(10, 16, 13, 0.68);
+  background: rgba(10, 16, 13, 0.72);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   border: 1px solid rgba(214, 180, 119, 0.22);
   border-radius: 9999px;
-  box-shadow: 0 12px 36px -8px rgba(0, 0, 0, 0.75),
-              inset 0 1px 0 0 rgba(255, 255, 255, 0.12),
-              inset 0 0 16px rgba(214, 180, 119, 0.03);
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 10px 30px -6px rgba(0, 0, 0, 0.75),
+              inset 0 1px 0 0 rgba(255, 255, 255, 0.1),
+              inset 0 0 12px rgba(214, 180, 119, 0.03);
+  transition: padding 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              background 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: auto;
 }
 
 .cinematic-header.is-scrolled .header-container {
+  padding: 0.3rem 1rem;
   background: rgba(5, 9, 7, 0.88);
-  backdrop-filter: blur(24px) saturate(190%);
-  -webkit-backdrop-filter: blur(24px) saturate(190%);
   border-color: rgba(214, 180, 119, 0.28);
-  box-shadow: 0 16px 42px -6px rgba(0, 0, 0, 0.85),
-              inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
+  box-shadow: 0 14px 36px -6px rgba(0, 0, 0, 0.85),
+              inset 0 1px 0 0 rgba(255, 255, 255, 0.12);
 }
 
-/* ── Brand Logo "RM" ─────────────────────────────────────────── */
+/* ── Left Side: Clean, Premium "RM" Monogram ───────────────────── */
 .brand-logo {
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.25rem;
   text-decoration: none;
   cursor: pointer;
-  padding: 0.25rem 0.5rem;
+  padding: 0.18rem 0.45rem;
   border-radius: 9999px;
-  transition: all 0.25s ease;
+  transition: transform 0.25s ease, background 0.25s ease;
   user-select: none;
   flex-shrink: 0;
 }
 
 .brand-logo:hover {
   transform: translateY(-1px);
+  background: rgba(214, 180, 119, 0.06);
 }
 
-.logo-mark {
-  font-family: 'Sora', sans-serif;
-  font-size: 1.25rem;
-  font-weight: 800;
+.logo-monogram {
+  font-family: 'Petrona', 'Cinzel', Georgia, serif;
+  font-size: 1.05rem;
+  font-weight: 700;
   letter-spacing: 0.04em;
   display: inline-flex;
   align-items: baseline;
   line-height: 1;
 }
 
-.logo-r {
+.mono-r {
   color: #F5F0E6;
+  transition: color 0.25s ease;
 }
 
-.logo-m {
+.mono-m {
   color: #D6B477;
-  font-weight: 700;
-  transition: all 0.25s ease;
+  font-weight: 600;
+  margin-left: -0.5px;
+  transition: color 0.25s ease, text-shadow 0.25s ease;
 }
 
-.brand-logo:hover .logo-m {
+.brand-logo:hover .mono-m {
   color: #f3d59b;
-  text-shadow: 0 0 12px rgba(214, 180, 119, 0.6);
+  text-shadow: 0 0 10px rgba(214, 180, 119, 0.6);
 }
 
 .logo-accent-dot {
-  width: 5px;
-  height: 5px;
+  width: 4px;
+  height: 4px;
   background-color: #D6B477;
   border-radius: 50%;
   display: inline-block;
   box-shadow: 0 0 6px rgba(214, 180, 119, 0.85);
+  margin-left: 1px;
 }
 
-/* ── Right Side Navigation ───────────────────────────────────── */
+/* ── Right Side Container: Nav Menu + Mobile Trigger ──────────── */
 .header-right {
   display: flex;
   align-items: center;
   justify-content: flex-end;
 }
 
+/* ── Floating Pill Navigation Menu ────────────────────────────── */
 .nav-pill-wrapper {
   display: flex;
   align-items: center;
@@ -123,10 +132,16 @@
 .nav-pill-list {
   display: flex;
   align-items: center;
-  gap: 0.2rem;
+  gap: 0.25rem;
   margin: 0;
-  padding: 0;
+  padding: 0.16rem 0.28rem;
   list-style: none;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(214, 180, 119, 0.14);
+  border-radius: 9999px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
 }
 
 .nav-pill-link {
@@ -134,34 +149,30 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.42rem 0.92rem;
+  padding: 0.28rem 0.78rem;
   border-radius: 9999px;
   text-decoration: none;
   font-family: 'Sora', sans-serif;
-  font-size: 0.78rem;
+  font-size: 0.74rem;
   font-weight: 500;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgba(245, 240, 230, 0.72);
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  cursor: pointer;
-  border: 1px solid transparent;
+  color: rgba(245, 240, 230, 0.7);
+  transition: color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
   white-space: nowrap;
 }
 
 .nav-pill-link:hover {
-  color: #F5F0E6;
-  background: rgba(214, 180, 119, 0.12);
-  border-color: rgba(214, 180, 119, 0.25);
-  box-shadow: 0 0 12px rgba(214, 180, 119, 0.15);
+  color: #FFFFFF;
+  background: rgba(214, 180, 119, 0.08);
 }
 
 .nav-pill-link.active {
   color: #D6B477;
-  background: rgba(214, 180, 119, 0.16);
+  background: rgba(214, 180, 119, 0.14);
+  box-shadow: inset 0 0 10px rgba(214, 180, 119, 0.12),
+              0 0 10px rgba(214, 180, 119, 0.08);
   font-weight: 600;
-  border-color: rgba(214, 180, 119, 0.4);
-  box-shadow: 0 0 16px rgba(214, 180, 119, 0.22);
 }
 
 .nav-active-indicator {
@@ -169,10 +180,10 @@
   bottom: 3px;
   left: 50%;
   transform: translateX(-50%) scaleX(0);
-  width: 12px;
-  height: 1.5px;
-  background-color: #D6B477;
-  border-radius: 1px;
+  width: 14px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #D6B477, transparent);
+  border-radius: 2px;
   transition: transform 0.25s ease;
 }
 
@@ -180,68 +191,56 @@
   transform: translateX(-50%) scaleX(1);
 }
 
-/* ── Mobile Hamburger Toggle Button ──────────────────────────── */
+/* ── Mobile Hamburger Toggle Button ───────────────────────────── */
 .mobile-toggle-btn {
   display: none;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-end;
+  align-items: center;
   gap: 5px;
-  width: 38px;
-  height: 38px;
-  padding: 8px;
+  width: 32px;
+  height: 32px;
+  padding: 0;
   background: rgba(214, 180, 119, 0.08);
-  border: 1px solid rgba(214, 180, 119, 0.25);
-  border-radius: 9999px;
+  border: 1px solid rgba(214, 180, 119, 0.22);
+  border-radius: 50%;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
 }
 
 .mobile-toggle-btn:hover {
-  background: rgba(214, 180, 119, 0.16);
+  background: rgba(214, 180, 119, 0.15);
   border-color: #D6B477;
 }
 
 .toggle-bar {
   display: block;
+  width: 14px;
   height: 1.5px;
   background-color: #F5F0E6;
-  border-radius: 1px;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 2px;
+  transition: transform 0.25s ease, opacity 0.25s ease;
 }
 
-.toggle-bar:nth-child(1) {
-  width: 18px;
+.mobile-toggle-btn.is-open .toggle-bar:first-child {
+  transform: translateY(3.25px) rotate(45deg);
 }
 
-.toggle-bar:nth-child(2) {
-  width: 13px;
-  background-color: #D6B477;
+.mobile-toggle-btn.is-open .toggle-bar:last-child {
+  transform: translateY(-3.25px) rotate(-45deg);
 }
 
-.mobile-toggle-btn.is-open .toggle-bar:nth-child(1) {
-  width: 16px;
-  transform: translateY(3.5px) rotate(45deg);
-  background-color: #D6B477;
-}
-
-.mobile-toggle-btn.is-open .toggle-bar:nth-child(2) {
-  width: 16px;
-  transform: translateY(-3px) rotate(-45deg);
-  background-color: #D6B477;
-}
-
-/* ── Mobile Drawer Backdrop & Panel ───────────────────────────── */
+/* ── Mobile Drawer Backdrop ───────────────────────────────────── */
 .mobile-drawer-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.75);
+  background: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  z-index: 105;
+  z-index: 140;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.35s ease;
+  transition: opacity 0.3s ease;
 }
 
 .mobile-drawer-backdrop.is-open {
@@ -249,25 +248,25 @@
   pointer-events: auto;
 }
 
+/* ── Mobile Drawer Panel ──────────────────────────────────────── */
 .mobile-drawer {
   position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
-  width: 85vw;
-  max-width: 320px;
-  z-index: 110;
-  background: rgba(6, 12, 9, 0.95);
+  width: min(320px, 85vw);
+  background: rgba(8, 12, 10, 0.96);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border-left: 1px solid rgba(214, 180, 119, 0.2);
-  box-shadow: -10px 0 45px rgba(0, 0, 0, 0.85);
+  z-index: 150;
   padding: 1.5rem 1.5rem 2rem;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   transform: translateX(100%);
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: -10px 0 40px rgba(0, 0, 0, 0.8);
 }
 
 .mobile-drawer.is-open {
@@ -287,8 +286,8 @@
   border: 1px solid rgba(214, 180, 119, 0.2);
   color: rgba(245, 240, 230, 0.75);
   cursor: pointer;
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -325,7 +324,7 @@
   text-decoration: none;
   color: rgba(245, 240, 230, 0.75);
   font-family: 'Sora', sans-serif;
-  font-size: 0.92rem;
+  font-size: 0.88rem;
   font-weight: 500;
   letter-spacing: 0.05em;
   transition: all 0.25s ease;
@@ -335,12 +334,12 @@
 
 .drawer-nav-num {
   font-family: 'Sora', sans-serif;
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 600;
   color: #D6B477;
   opacity: 0.7;
-  margin-right: 0.85rem;
-  min-width: 22px;
+  margin-right: 0.75rem;
+  min-width: 20px;
 }
 
 .drawer-nav-text {
@@ -363,6 +362,7 @@
 
 .drawer-nav-link.active {
   font-weight: 600;
+  box-shadow: 0 0 14px rgba(214, 180, 119, 0.16);
 }
 
 .drawer-nav-link:hover .drawer-nav-arrow,
@@ -373,20 +373,20 @@
 
 /* ── Responsive Media Queries ─────────────────────────────────── */
 @media (max-width: 900px) {
-  .cinematic-header {
-    top: 0.75rem;
-    width: calc(100% - 1.5rem);
-  }
-
-  .header-container {
-    padding: 0.45rem 1rem;
-  }
-
   .nav-pill-wrapper {
     display: none;
   }
 
   .mobile-toggle-btn {
     display: flex;
+  }
+
+  .cinematic-header {
+    top: 0.6rem;
+    width: calc(100% - 1.5rem);
+  }
+
+  .header-container {
+    padding: 0.35rem 0.85rem;
   }
 }

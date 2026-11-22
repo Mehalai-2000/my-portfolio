@@ -1,52 +1,51 @@
 <!-- ═══════════════════════════════════════════════════════════════
      PREMIUM CINEMATIC FLOATING NAVIGATION BAR
      Aesthetic: Pure Black Studio & Warm Champagne Gold (#D6B477)
-     Layout: Brand Logo (RM) on LEFT · Navigation Menu on RIGHT
+     Layout: Brand "RM" Monogram (Left) · Floating Pill Navigation (Right)
      ═══════════════════════════════════════════════════════════════ -->
 
 <header class="cinematic-header" [class.is-scrolled]="isScrolled" role="banner">
   <div class="header-container">
 
     <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-         LEFT SIDE: Minimal Brand Logo "RM"
+         LEFT SIDE: Clean, Premium "RM" Monogram
          ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
-      <a href="#home" class="brand-logo" (click)="scrollTo('home', $event)" aria-label="Ramumanimehalai M - Home">
-        <span class="logo-mark">
-          <span class="logo-r">R</span>
-          <span class="logo-m">M</span>
-        </span>
-        <span class="logo-accent-dot" aria-hidden="true"></span>
-      </a>
+    <a href="#home" class="brand-logo" (click)="scrollTo('home', $event)" aria-label="Ramumanimehalai M - Home">
+      <span class="logo-monogram">
+        <span class="mono-r">R</span><span class="mono-m">M</span>
+      </span>
+      <span class="logo-accent-dot" aria-hidden="true"></span>
+    </a>
 
-      <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-         RIGHT SIDE: Floating Pill Navigation Menu (Desktop)
+    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+         RIGHT SIDE: Compact Floating Pill Navigation Menu (Desktop)
                      + Mobile Hamburger Toggle (Mobile / Tablet)
          ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
-      <div class="header-right">
+    <div class="header-right">
 
-        <!-- Modern Floating Pill Navigation Menu -->
-        <nav class="nav-pill-wrapper" aria-label="Primary Navigation">
-          <ul class="nav-pill-list" role="menubar">
-            <li *ngFor="let item of navItems" role="none">
-              <a [href]="'#' + item.id" role="menuitem" class="nav-pill-link" [class.active]="activeSection === item.id"
-                [attr.aria-current]="activeSection === item.id ? 'page' : null" (click)="scrollTo(item.id, $event)">
-                <span class="nav-label">{{ item.label }}</span>
-                <span class="nav-active-indicator" aria-hidden="true"></span>
-              </a>
-            </li>
-          </ul>
-        </nav>
+      <!-- Modern Floating Pill Navigation Menu -->
+      <nav class="nav-pill-wrapper" aria-label="Primary Navigation">
+        <ul class="nav-pill-list" role="menubar">
+          <li *ngFor="let item of navItems" role="none">
+            <a [href]="'#' + item.id" role="menuitem" class="nav-pill-link" [class.active]="activeSection === item.id"
+              [attr.aria-current]="activeSection === item.id ? 'page' : null" (click)="scrollTo(item.id, $event)">
+              <span class="nav-label">{{ item.label }}</span>
+              <span class="nav-active-indicator" aria-hidden="true"></span>
+            </a>
+          </li>
+        </ul>
+      </nav>
 
-        <!-- Mobile Hamburger Toggle Button -->
-        <button type="button" class="mobile-toggle-btn" [class.is-open]="isMobileMenuOpen" (click)="toggleMobileMenu()"
-          [attr.aria-expanded]="isMobileMenuOpen" aria-label="Toggle navigation menu">
-          <span class="toggle-bar"></span>
-          <span class="toggle-bar"></span>
-        </button>
-
-      </div>
+      <!-- Mobile Hamburger Toggle Button -->
+      <button type="button" class="mobile-toggle-btn" [class.is-open]="isMobileMenuOpen" (click)="toggleMobileMenu()"
+        [attr.aria-expanded]="isMobileMenuOpen" aria-label="Toggle navigation menu">
+        <span class="toggle-bar"></span>
+        <span class="toggle-bar"></span>
+      </button>
 
     </div>
+
+  </div>
 </header>
 
 <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -61,9 +60,8 @@
   <!-- Mobile Drawer Header -->
   <div class="drawer-header">
     <a href="#home" class="brand-logo" (click)="scrollTo('home', $event)">
-      <span class="logo-mark">
-        <span class="logo-r">R</span>
-        <span class="logo-m">M</span>
+      <span class="logo-monogram">
+        <span class="mono-r">R</span><span class="mono-m">M</span>
       </span>
       <span class="logo-accent-dot" aria-hidden="true"></span>
     </a>
