@@ -1,50 +1,33 @@
 <!-- ═══════════════════════════════════════════════════════════════
      PREMIUM CINEMATIC HERO SECTION
      Theme: Pure Black Studio (#000000) · Warm Gold Accents (#D6B477)
-     Layout: Centered Walking Character · Background PORTFOLIO Typography
-     Left-Side Editorial Magazine Typography · Glassmorphism Architecture
+     Layout: 3-Column Hero Grid
+             Col 1: Left Editorial Content (Typography, Buttons, Status)
+             Col 2: Horizontally Centered Walking Character (Head to Feet)
+             Col 3: Right Editorial Flank (Desktop Details)
+     Depth: Giant Background PORTFOLIO Typography behind Character
      ═══════════════════════════════════════════════════════════════ -->
 <div class="cinematic-hero" #heroSection aria-label="Cinematic Hero Section">
 
   <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
        LAYER 1: BACKGROUND TYPOGRAPHY (PORTFOLIO)
        Positioned directly behind the character with depth layering
-       Soft opacity & stroke style creates editorial depth
+       Controlled size & strictly bounded within viewport
        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
   <div class="hero-bg-typography" #bgTypography aria-hidden="true">
     <span class="bg-word-portfolio">PORTFOLIO</span>
   </div>
 
   <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       LAYER 2: CENTER WALKING CHARACTER STAGE
-       Positioned EXACTLY in the horizontal center of the hero section
-       Full body visible (head to feet) without cropping
-       Natural walking movement starting straight toward camera
-       mix-blend-mode: screen creates seamless transparency
+       MAIN 3-COLUMN HERO GRID
+       Column 1 (1fr): Left Editorial Content
+       Column 2 (auto): Center Walking Character Stage (Head to Feet)
+       Column 3 (1fr): Right Editorial Badge / Spacer
+       Grid mathematically centers Column 2 and PREVENTS any overlap!
        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
-  <div class="hero-character-stage">
+  <div class="hero-grid">
 
-    <!-- ── 60FPS Single HTML Canvas Sequence Renderer (Walk straight from frame 70) ── -->
-    <canvas #heroCanvas class="cinematic-canvas" [class.canvas-hidden]="isTalkPlaying"
-      aria-label="Cinematic developer introduction of Ramumanimehalai">
-    </canvas>
-
-    <!-- ── Talk Video: Seamlessly plays portfolio_talk.mp4 when Talk to Me is clicked ── -->
-    <video #talkVideo class="cinematic-video" [class.video-hidden]="!isTalkPlaying" src="/videos/portfolio_talk.mp4"
-      playsinline preload="auto" disablePictureInPicture
-      [attr.aria-label]="'Audio introduction video of Ramumanimehalai'">
-    </video>
-
-  </div>
-
-  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       LAYER 3: FOREGROUND EDITORIAL CONTENT CONTAINER
-       Left-Side Typography & Balanced Desktop Highlights
-       Floating in the foreground above background layers
-       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
-  <div class="hero-container">
-
-    <!-- Left Side: Editorial Typography Content -->
+    <!-- ── COLUMN 1: LEFT-SIDE EDITORIAL CONTENT ── -->
     <div class="hero-content">
 
       <!-- Small elegant greeting pill -->
@@ -72,7 +55,7 @@
       <!-- Subtle separator: Progressive reveal gold line -->
       <div class="gold-separator" aria-hidden="true"></div>
 
-      <!-- Refined short description: Word-by-word staggered reveal -->
+      <!-- Refined short description -->
       <p class="hero-description"
         aria-label="Crafting high-performance web applications and cinematic digital experiences with clean architecture and thoughtful design.">
         @for (word of descWords; track $index) {
@@ -101,12 +84,10 @@
           <!-- Audio Wave / Mic Icon -->
           <span class="btn-talk__icon" aria-hidden="true">
             @if (isTalkPlaying) {
-            <!-- Animated Audio Waves -->
             <span class="audio-wave">
               <span></span><span></span><span></span><span></span>
             </span>
             } @else {
-            <!-- Mic Icon -->
             <svg width="14" height="14" style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M12 2a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z" />
@@ -152,7 +133,21 @@
 
     </div>
 
-    <!-- Right Side: Balanced Editorial Accent (Desktop Only) -->
+    <!-- ── COLUMN 2: CENTER WALKING CHARACTER STAGE ── -->
+    <div class="hero-character-stage">
+      <!-- 60FPS Single HTML Canvas Sequence Renderer (Walk straight from frame 70) -->
+      <canvas #heroCanvas class="cinematic-canvas" [class.canvas-hidden]="isTalkPlaying"
+        aria-label="Cinematic developer introduction of Ramumanimehalai">
+      </canvas>
+
+      <!-- Talk Video Stream -->
+      <video #talkVideo class="cinematic-video" [class.video-hidden]="!isTalkPlaying" src="/videos/portfolio_talk.mp4"
+        playsinline preload="auto" disablePictureInPicture
+        [attr.aria-label]="'Audio introduction video of Ramumanimehalai'">
+      </video>
+    </div>
+
+    <!-- ── COLUMN 3: RIGHT BALANCED FLANK (Desktop Stats & Details) ── -->
     <div class="hero-editorial-badge" aria-hidden="true">
       <div class="editorial-stat">
         <span class="stat-num">03+</span>

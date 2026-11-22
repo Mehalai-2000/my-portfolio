@@ -612,12 +612,14 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
       this.scrollTriggerInstance.kill();
     }
 
+    const isMobile = typeof window !== 'undefined' && window.innerWidth <= 991;
+
     this.scrollTriggerInstance = ScrollTrigger.create({
       trigger: hero,
       start: 'top top',
-      end: '+=300%',
+      end: isMobile ? '+=120%' : '+=300%',
       scrub: true,
-      pin: true,
+      pin: !isMobile,
       invalidateOnRefresh: true,
       onUpdate: (self) => {
         if (this.destroyed) return;
