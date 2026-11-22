@@ -1,62 +1,69 @@
 <!-- ═══════════════════════════════════════════════════════════════
-     CINEMATIC HERO INTRO ANIMATION
-     1. Pure Black (#000000) Cinematic Background
-     2. Confident Center Walking Animation toward Camera (Frame 70 to 142)
-     3. Natural Center Poised Stop
-     4. Sequential Golden Cinematic Name Reveal: "RAMUMANIMEHALAI"
-     5. Smooth Cinematic Role Reveal: "ANGULAR / FRONTEND DEVELOPER"
-     6. Strict Identity Preservation & Seamless Dissolve into Hero
+     CINEMATIC INTRO: NAME-TO-PORTFOLIO TEXT MORPH
+     Theme: Pure Black Studio (#000000) · Champagne Gold (#D6B477)
+     Typography: Petrona (Editorial Serif)
+     Continuous Physics-Driven Letter Rearrangement & "I" Drop Animation
      ═══════════════════════════════════════════════════════════════ -->
 
 <div class="cinematic-intro-overlay" #introOverlay (click)="skipIntro()" [class.is-hidden]="isFinished"
-  role="presentation" aria-label="Portfolio Cinematic Introduction">
+  role="presentation" aria-label="Portfolio Introduction Animation">
 
-  <!-- Ambient Subtle Golden & Emerald Lighting -->
+  <!-- Ambient Golden & Emerald Atmospheric Auras -->
   <div class="intro-aura intro-aura--center" #ambientAura aria-hidden="true"></div>
   <div class="intro-aura intro-aura--emerald" aria-hidden="true"></div>
 
-  <!-- Walking Animation Canvas Stage (Dead Center) -->
-  <div class="intro-canvas-stage">
-    <canvas #walkCanvas class="intro-walk-canvas" width="1920" height="1080"></canvas>
-  </div>
-
-  <!-- Cinematic Vignette for Depth & Focus -->
+  <!-- Subtle Cinematic Letterbox Vignette -->
   <div class="intro-vignette" aria-hidden="true"></div>
 
-  <!-- Central Typography Showcase Stage -->
-  <div class="intro-title-stage" #titleStage>
+  <!-- Central Morphing Stage -->
+  <div class="intro-morph-stage">
 
-    <!-- Eyebrow Tag -->
-    <div class="intro-eyebrow" #eyebrowPill aria-hidden="true">
-      <span class="eyebrow-line"></span>
-      <span class="eyebrow-text">PORTFOLIO</span>
-      <span class="eyebrow-line"></span>
+    <!-- Subtle Eyebrow Tag -->
+      <div class="intro-meta-pill" #metaPill aria-hidden="true">
+        <span class="meta-dot"></span>
+        <span class="meta-text">RAMUMANIMEHALAI · PORTFOLIO</span>
+        <span class="meta-dot"></span>
+      </div>
+
+      <!-- The Dual Word Staging Frame -->
+      <div class="morph-word-box">
+
+        <!-- 1. Source Word: RAMUMANIMEHALAI -->
+        <div class="word-track word-track--name" #nameContainer>
+          @for (item of nameLetters; track item.id; let idx = $index) {
+          <span class="morph-char name-char" [attr.data-char]="item.char" [attr.data-index]="idx" [attr.id]="item.id">{{
+            item.char }}</span>
+          }
+        </div>
+
+        <!-- 2. Target Word: PORTFOLIO -->
+        <div class="word-track word-track--portfolio" #portfolioContainer>
+          @for (item of portfolioLetters; track item.id; let idx = $index) {
+          <span class="morph-char port-char" [class.port-char--i]="item.char === 'I'" [attr.data-char]="item.char"
+          >
+          {{ item.char }}
+          @if (item.char === 'I') {
+          <span class="impact-ring" #impactRing aria-hidden="true"></span>
+          }
+          </span>
+          }
+        </div>
+
+        <!-- Golden Light Flare Sweep -->
+        <div class="gold-flare-sweep" aria-hidden="true"></div>
+
+      </div>
+
+      <!-- Small Subtitle Accent Line -->
+        <div class="intro-bottom-subtext" #subtext aria-hidden="true">
+          <span>ANGULAR / FRONTEND DEVELOPER</span>
+        </div>
+
+      </div>
+
+      <!-- Subtle Skip Prompt -->
+      <div class="intro-skip-prompt" aria-hidden="true">
+        <span>CLICK ANYWHERE TO SKIP</span>
+      </div>
+
     </div>
-
-    <!-- Name: RAMUMANIMEHALAI (Sequential Golden Letter Animation) -->
-    <h1 class="intro-name" #nameContainer aria-label="Ramumanimehalai">
-      @for (char of nameChars; track $index) {
-        <span class="intro-char" [attr.data-char]="char">{{ char }}</span>
-      }
-    </h1>
-
-    <!-- Golden Flare Sweep across typography -->
-    <div class="intro-gold-flare" #goldFlare aria-hidden="true"></div>
-
-    <!-- Role: ANGULAR / FRONTEND DEVELOPER -->
-    <div class="intro-role" #roleContainer aria-label="Angular / Frontend Developer">
-      <span class="intro-role-text">ANGULAR / FRONTEND DEVELOPER</span>
-    </div>
-
-  </div>
-
-  <!-- Minimalist Skip Button -->
-  <button class="intro-skip-btn" type="button" (click)="skipIntro(); $event.stopPropagation()" aria-label="Skip introduction">
-    <span>SKIP INTRO</span>
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <polygon points="5 4 15 12 5 20 5 4"></polygon>
-      <line x1="19" y1="5" x2="19" y2="19"></line>
-    </svg>
-  </button>
-
-</div>

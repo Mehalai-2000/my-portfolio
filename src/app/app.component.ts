@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { IntroComponent } from './components/intro/intro.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { HomeComponent } from './pages/home/home.component';
 import { AboutComponent } from './pages/about/about.component';
@@ -8,7 +7,7 @@ import { ContactComponent } from './pages/contact/contact.component';
 
 @Component({
   selector: 'app-root',
-  imports: [IntroComponent, NavbarComponent, HomeComponent, AboutComponent, ProjectsComponent, ContactComponent],
+  imports: [NavbarComponent, HomeComponent, AboutComponent, ProjectsComponent, ContactComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
