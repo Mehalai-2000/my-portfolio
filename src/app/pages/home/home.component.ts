@@ -106,12 +106,12 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
 
     this.initTalkVideo();
 
-    // Fallback safety: If intro doesn't trigger entrance within 5.2s, play automatically
+    // Fallback safety: If intro doesn't trigger entrance within 7.5s, play automatically
     this.fallbackTimer = setTimeout(() => {
       if (!this.entrancePlayed) {
         this.playCinematicEntrance();
       }
-    }, 5200);
+    }, 7500);
   }
 
   ngOnDestroy(): void {
