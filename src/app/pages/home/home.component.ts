@@ -33,9 +33,6 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
   talkButtonLabel = 'TALK TO ME';
   isTalkPlaying = false;
 
-  // ── Giant Background "PORTFOLIO" Letters (Falling Animation) ─────
-  readonly bgPortfolioLetters: string[] = ['P', 'O', 'R', 'T', 'F', 'O', 'L', 'I', 'O'];
-
   // ── Cinematic Multi-Directional Name Characters (15 letters) ────
   readonly nameCharacters: NameCharConfig[] = [
     { char: 'R', dir: 'left', startX: -130, startY: -15, rotation: -16 },
@@ -57,15 +54,15 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
 
   // ── Word-Level Staggered Description ────────────────────────────
   readonly descWords: string[] = [
-    '"I', 'build', 'modern,', 'responsive,', 'and', 'user-friendly',
-    'web', 'experiences', 'with', 'clean', 'code', 'and', 'thoughtful', 'design."'
+    'Crafting', 'high-performance', 'web', 'applications', 'and', 'cinematic',
+    'digital', 'experiences', 'with', 'Angular,', 'clean', 'code,', 'and', 'thoughtful', 'design.'
   ];
 
   // ── Frame Sequence Constants ───────────────────────────────────
-  // Straight-walking pose frames: 70 through 275 (206 frames of pure forward walk toward camera)
+  // Skip the turning animation (frames 1–69) and begin directly from straight-walking pose (frame 70)
   readonly START_FRAME = 70;
-  readonly END_FRAME = 275;
-  readonly TOTAL_FRAMES = 275 - 70 + 1; // 206 frames
+  readonly END_FRAME = 580;
+  readonly TOTAL_FRAMES = 580 - 70 + 1; // 511 frames
   private readonly CANVAS_WIDTH = 1920;
   private readonly CANVAS_HEIGHT = 1080;
 
@@ -85,7 +82,8 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
   // ── Cinematic Text Animation State ─────────────────────────────
   private entranceTimeline: gsap.core.Timeline | null = null;
   private entrancePlayed = false;
-  private autoEntranceTimer: any = null;
+  private fallbackTimer: any = null;
+  private mouseMoveHandler?: (e: MouseEvent) => void;
 
   constructor(
     private zone: NgZone,
@@ -100,6 +98,7 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
     // Run canvas initialization outside Angular zone for max 60-120fps performance
     this.zone.runOutsideAngular(() => {
       this.initCanvasAndScroller();
+      this.initBgParallax();
 
       // Pre-position animated elements to prevent initial visual flash
       requestAnimationFrame(() => {
@@ -109,20 +108,27 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
 
     this.initTalkVideo();
 
-    // Trigger cinematic entrance sequence on landing
-    this.autoEntranceTimer = setTimeout(() => {
+    // Fallback safety: If intro doesn't trigger entrance within 5.2s, play automatically
+    this.fallbackTimer = setTimeout(() => {
       if (!this.entrancePlayed) {
         this.playCinematicEntrance();
       }
-    }, 280);
+    }, 5200);
   }
 
   ngOnDestroy(): void {
     this.destroyed = true;
 
-    if (this.autoEntranceTimer) {
-      clearTimeout(this.autoEntranceTimer);
-      this.autoEntranceTimer = null;
+    if (this.fallbackTimer) {
+      clearTimeout(this.fallbackTimer);
+      this.fallbackTimer = null;
+    }
+
+    if (this.mouseMoveHandler) {
+      const hero = this.heroSectionRef?.nativeElement;
+      if (hero) {
+        hero.removeEventListener('mousemove', this.mouseMoveHandler);
+      }
     }
 
     if (this.entranceTimeline) {
@@ -161,27 +167,8 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
       return;
     }
 
-    // Giant background "PORTFOLIO" letters (positioned high, will fall down)
-    const bgLetters = hero.querySelectorAll<HTMLElement>('.bg-port-char');
-    bgLetters.forEach((el, idx) => {
-      const rot = (idx % 2 === 0 ? -1 : 1) * (4 + (idx % 3) * 2);
-      gsap.set(el, {
-        y: -220,
-        opacity: 0,
-        rotation: rot,
-        scale: 0.9,
-        filter: 'blur(8px)'
-      });
-    });
-
-    // Centered character stage
-    const characterStage = hero.querySelector<HTMLElement>('.hero-character-stage');
-    if (characterStage) {
-      gsap.set(characterStage, { opacity: 0, scale: 0.96 });
-    }
-
-    const salutation = hero.querySelector('.hero-salutation');
-    const salutationLine = hero.querySelector('.salutation-line');
+    const bgTypography = hero.querySelector<HTMLElement>('.hero-bg-typography');
+    const greetingPill = hero.querySelector<HTMLElement>('.hero-greeting-pill');
     const nameChars = hero.querySelectorAll<HTMLElement>('.hero-name-char');
     const titleAngular = hero.querySelector<HTMLElement>('.hero-title-word--angular');
     const titleSep = hero.querySelector<HTMLElement>('.hero-title-sep');
@@ -189,15 +176,18 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
     const titleDeveloper = hero.querySelector<HTMLElement>('.hero-title-word--developer');
     const separator = hero.querySelector<HTMLElement>('.gold-separator');
     const descWords = hero.querySelectorAll<HTMLElement>('.hero-desc-word');
-    const availability = hero.querySelector<HTMLElement>('.hero-availability');
     const btnPrimary = hero.querySelector<HTMLElement>('.btn-primary');
     const btnTalk = hero.querySelector<HTMLElement>('.btn-talk');
+    const statusPill = hero.querySelector<HTMLElement>('.hero-status-pill');
     const socialLinks = hero.querySelectorAll<HTMLElement>('.hero-socials .social-link');
+    const editorialBadge = hero.querySelector<HTMLElement>('.hero-editorial-badge');
     const scrollIndicator = hero.querySelector<HTMLElement>('.hero-scroll');
 
-    // Salutation
-    if (salutation) gsap.set(salutation, { opacity: 0, x: -30 });
-    if (salutationLine) gsap.set(salutationLine, { scaleX: 0, opacity: 0 });
+    // Background typography: Soft depth layer
+    if (bgTypography) gsap.set(bgTypography, { opacity: 0, scale: 1.08, filter: 'blur(12px)' });
+
+    // Greeting Pill
+    if (greetingPill) gsap.set(greetingPill, { opacity: 0, x: -30, filter: 'blur(4px)' });
 
     // Name characters: multi-directional flying start points
     nameChars.forEach((el, idx) => {
@@ -230,11 +220,12 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
       });
     });
 
-    // Right flank elements
-    if (availability) gsap.set(availability, { y: 22, opacity: 0 });
+    // Buttons, Meta & Editorial Badges
     if (btnPrimary) gsap.set(btnPrimary, { y: 28, opacity: 0, scale: 0.94 });
     if (btnTalk) gsap.set(btnTalk, { y: 28, opacity: 0, scale: 0.94 });
+    if (statusPill) gsap.set(statusPill, { y: 20, opacity: 0 });
     if (socialLinks.length) gsap.set(socialLinks, { y: 20, opacity: 0, scale: 0.9 });
+    if (editorialBadge) gsap.set(editorialBadge, { x: 30, opacity: 0, filter: 'blur(6px)' });
     if (scrollIndicator) gsap.set(scrollIndicator, { y: 15, opacity: 0 });
   }
 
@@ -244,7 +235,7 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
     if (!hero) return;
 
     const allAnimated = hero.querySelectorAll(
-      '.bg-port-char, .hero-character-stage, .hero-salutation, .salutation-line, .hero-name-char, .hero-title-word, .hero-title-sep, .gold-separator, .hero-desc-word, .hero-availability, .btn-primary, .btn-talk, .social-link, .hero-scroll'
+      '.hero-bg-typography, .hero-greeting-pill, .hero-name-char, .hero-title-word, .hero-title-sep, .gold-separator, .hero-desc-word, .btn-primary, .btn-talk, .hero-status-pill, .social-link, .hero-editorial-badge, .hero-scroll'
     );
     gsap.set(allAnimated, {
       opacity: 1,
@@ -257,14 +248,40 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
     });
   }
 
+  // ── Subtle Background Typography Mouse Parallax ─────────────────
+  private initBgParallax(): void {
+    const hero = this.heroSectionRef?.nativeElement;
+    const bgTypography = hero?.querySelector<HTMLElement>('.hero-bg-typography');
+    if (!hero || !bgTypography) return;
+
+    this.mouseMoveHandler = (e: MouseEvent) => {
+      if (this.destroyed) return;
+      const rect = hero.getBoundingClientRect();
+      const normX = (e.clientX - rect.left) / rect.width - 0.5;
+      const normY = (e.clientY - rect.top) / rect.height - 0.5;
+
+      gsap.to(bgTypography, {
+        x: normX * -30,
+        y: normY * -20,
+        duration: 1.2,
+        ease: 'power2.out',
+        overwrite: 'auto'
+      });
+    };
+
+    this.zone.runOutsideAngular(() => {
+      hero.addEventListener('mousemove', this.mouseMoveHandler!);
+    });
+  }
+
   // ── Play Cinematic Advanced Text Entrance Timeline ──────────────
   playCinematicEntrance(): void {
     if (this.entrancePlayed || this.destroyed || !this.isBrowser) return;
     this.entrancePlayed = true;
 
-    if (this.autoEntranceTimer) {
-      clearTimeout(this.autoEntranceTimer);
-      this.autoEntranceTimer = null;
+    if (this.fallbackTimer) {
+      clearTimeout(this.fallbackTimer);
+      this.fallbackTimer = null;
     }
 
     const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -277,10 +294,8 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
     if (!hero) return;
 
     this.zone.runOutsideAngular(() => {
-      const bgLetters = hero.querySelectorAll<HTMLElement>('.bg-port-char');
-      const characterStage = hero.querySelector<HTMLElement>('.hero-character-stage');
-      const salutation = hero.querySelector('.hero-salutation');
-      const salutationLine = hero.querySelector('.salutation-line');
+      const bgTypography = hero.querySelector<HTMLElement>('.hero-bg-typography');
+      const greetingPill = hero.querySelector<HTMLElement>('.hero-greeting-pill');
       const nameChars = hero.querySelectorAll<HTMLElement>('.hero-name-char');
       const titleAngular = hero.querySelector<HTMLElement>('.hero-title-word--angular');
       const titleSep = hero.querySelector<HTMLElement>('.hero-title-sep');
@@ -288,71 +303,47 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
       const titleDeveloper = hero.querySelector<HTMLElement>('.hero-title-word--developer');
       const separator = hero.querySelector<HTMLElement>('.gold-separator');
       const descWords = hero.querySelectorAll<HTMLElement>('.hero-desc-word');
-      const availability = hero.querySelector<HTMLElement>('.hero-availability');
       const btnPrimary = hero.querySelector<HTMLElement>('.btn-primary');
       const btnTalk = hero.querySelector<HTMLElement>('.btn-talk');
+      const statusPill = hero.querySelector<HTMLElement>('.hero-status-pill');
       const socialLinks = hero.querySelectorAll<HTMLElement>('.hero-socials .social-link');
+      const editorialBadge = hero.querySelector<HTMLElement>('.hero-editorial-badge');
       const scrollIndicator = hero.querySelector<HTMLElement>('.hero-scroll');
 
       this.entranceTimeline = gsap.timeline({
         onComplete: () => {
-          // Clear animation transform props to guarantee crisp native CSS hover and rendering
+          // Clear animation transform props to guarantee 100% crisp CSS hover and subpixel rendering
           gsap.set(
-            [salutation, salutationLine, ...Array.from(nameChars), titleAngular, titleSep, titleFrontend, titleDeveloper, separator, ...Array.from(descWords), availability, btnPrimary, btnTalk, ...Array.from(socialLinks), scrollIndicator],
+            [greetingPill, ...Array.from(nameChars), titleAngular, titleSep, titleFrontend, titleDeveloper, separator, ...Array.from(descWords), btnPrimary, btnTalk, statusPill, ...Array.from(socialLinks), editorialBadge, scrollIndicator],
             { clearProps: 'transform,filter,opacity' }
           );
         }
       });
 
-      // ── Step 1 & 2 (0.2s - 1.2s): Giant "PORTFOLIO" Letters Fall from Top ──
-      bgLetters.forEach((charEl, idx) => {
-        this.entranceTimeline!.to(charEl, {
-          y: 0,
-          rotation: 0,
-          opacity: 0.25,
+      // ── 0.0 – 1.0s: Background Typography PORTFOLIO Depth Reveal ─
+      if (bgTypography) {
+        this.entranceTimeline.to(bgTypography, {
+          opacity: 0.85,
           scale: 1,
           filter: 'blur(0px)',
-          duration: 1.0,
-          ease: 'power3.out'
-        }, 0.2 + idx * 0.08);
-      });
-
-      // ── Step 3 (0.6s - 1.6s): Centered Character Stage Fades & Scales In ──
-      if (characterStage) {
-        this.entranceTimeline.to(characterStage, {
-          opacity: 1,
-          scale: 1,
-          duration: 1.1,
+          duration: 1.4,
           ease: 'power2.out'
-        }, 0.6);
+        }, 0.1);
       }
 
-      // ── Step 4 (1.2s - 1.6s): Background Typography Settles Gently ────
-      this.entranceTimeline.to(bgLetters, {
-        opacity: 0.20,
-        duration: 0.6,
-        ease: 'sine.inOut'
-      }, 1.3);
-
-      // ── Step 5 (1.4s - 2.4s): Salutation & Name "RAMUMANIMEHALAI" Reveal ─
-      if (salutation) {
-        this.entranceTimeline.to(salutation, {
+      // ── 0.3s: Greeting Pill Badge Reveals ────────────────────────
+      if (greetingPill) {
+        this.entranceTimeline.to(greetingPill, {
           opacity: 1,
           x: 0,
-          duration: 0.55,
+          filter: 'blur(0px)',
+          duration: 0.65,
           ease: 'power2.out'
-        }, 1.4);
+        }, 0.3);
       }
 
-      if (salutationLine) {
-        this.entranceTimeline.to(salutationLine, {
-          scaleX: 1,
-          opacity: 1,
-          duration: 0.5,
-          ease: 'power2.out'
-        }, 1.45);
-      }
-
+      // ── 0.5 – 1.5s: Name Flies In Character by Character ─────────
+      // Entering from Left, Right, Top, and Bottom with subtle rotation
       nameChars.forEach((charEl, idx) => {
         this.entranceTimeline!.to(charEl, {
           x: 0,
@@ -361,30 +352,30 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
           opacity: 1,
           scale: 1,
           filter: 'blur(0px)',
-          duration: 0.82,
+          duration: 0.85,
           ease: 'power3.out'
-        }, 1.6 + idx * 0.045);
+        }, 0.5 + idx * 0.045);
       });
 
-      // ── Step 6 (2.3s - 3.1s): Professional Title & Gold Separator Slide In ──
+      // ── 1.5 – 2.2s: Professional Title Multi-Directional Entry ────
       if (titleAngular) {
         this.entranceTimeline.to(titleAngular, {
           x: 0,
           opacity: 1,
           scale: 1,
           filter: 'blur(0px)',
-          duration: 0.65,
+          duration: 0.68,
           ease: 'power2.out'
-        }, 2.3);
+        }, 1.5);
       }
 
       if (titleSep) {
         this.entranceTimeline.to(titleSep, {
           scale: 1,
           opacity: 1,
-          duration: 0.35,
+          duration: 0.4,
           ease: 'back.out(2)'
-        }, 2.4);
+        }, 1.6);
       }
 
       if (titleFrontend) {
@@ -393,9 +384,9 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
           opacity: 1,
           scale: 1,
           filter: 'blur(0px)',
-          duration: 0.65,
+          duration: 0.68,
           ease: 'power2.out'
-        }, 2.45);
+        }, 1.65);
       }
 
       if (titleDeveloper) {
@@ -404,50 +395,41 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
           opacity: 1,
           scale: 1,
           filter: 'blur(0px)',
-          duration: 0.68,
+          duration: 0.72,
           ease: 'power2.out'
-        }, 2.55);
+        }, 1.75);
       }
 
       if (separator) {
         this.entranceTimeline.to(separator, {
           scaleX: 1,
           opacity: 1,
-          duration: 0.5,
+          duration: 0.55,
           ease: 'power2.out'
-        }, 2.65);
+        }, 1.85);
       }
 
-      // Word-by-word Description Reveal
+      // ── 2.1 – 3.0s: Description Word-by-Word Staggered Reveal ────
       descWords.forEach((wordEl, idx) => {
         this.entranceTimeline!.to(wordEl, {
           x: 0,
           y: 0,
           opacity: 1,
           filter: 'blur(0px)',
-          duration: 0.5,
-          ease: 'power2.out'
-        }, 2.8 + idx * 0.035);
-      });
-
-      // ── Step 7 (3.1s - 4.1s): Right Flank Status, Actions & Connectivity ──
-      if (availability) {
-        this.entranceTimeline.to(availability, {
-          y: 0,
-          opacity: 1,
           duration: 0.55,
           ease: 'power2.out'
-        }, 3.1);
-      }
+        }, 2.1 + idx * 0.04);
+      });
 
+      // ── 2.9 – 3.6s: Action Buttons & Editorial Badges ────────────
       if (btnPrimary) {
         this.entranceTimeline.to(btnPrimary, {
           y: 0,
           opacity: 1,
           scale: 1,
-          duration: 0.6,
+          duration: 0.65,
           ease: 'back.out(1.5)'
-        }, 3.25);
+        }, 2.9);
       }
 
       if (btnTalk) {
@@ -455,9 +437,18 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
           y: 0,
           opacity: 1,
           scale: 1,
-          duration: 0.6,
+          duration: 0.65,
           ease: 'back.out(1.5)'
-        }, 3.4);
+        }, 3.05);
+      }
+
+      if (statusPill) {
+        this.entranceTimeline.to(statusPill, {
+          y: 0,
+          opacity: 1,
+          duration: 0.5,
+          ease: 'power2.out'
+        }, 3.2);
       }
 
       if (socialLinks.length) {
@@ -468,16 +459,27 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
           duration: 0.5,
           stagger: 0.08,
           ease: 'power2.out'
-        }, 3.55);
+        }, 3.3);
       }
 
+      if (editorialBadge) {
+        this.entranceTimeline.to(editorialBadge, {
+          x: 0,
+          opacity: 1,
+          filter: 'blur(0px)',
+          duration: 0.75,
+          ease: 'power2.out'
+        }, 3.1);
+      }
+
+      // ── 3.5s: Final Settling & Scroll Indicator ──────────────────
       if (scrollIndicator) {
         this.entranceTimeline.to(scrollIndicator, {
           y: 0,
           opacity: 1,
           duration: 0.6,
           ease: 'power2.out'
-        }, 3.8);
+        }, 3.5);
       }
     });
   }
