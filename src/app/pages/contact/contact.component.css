@@ -1,195 +1,549 @@
-/* 
-  Consistent Design System 
-  Radius: 16px (rounded-2xl)
-  Color: #0d9488 (Teal)
-  Spacing: 8px grid
-*/
+/* ═══════════════════════════════════════════════════════════════
+   PREMIUM CINEMATIC CONTACT COMPONENT STYLES
+   Theme: Pure Black (#000000) · Champagne Gold (#D6B477) · Emerald (#10B981)
+   Typography: Petrona (Editorial Serif) · Sora (Technical Sans)
+   ═══════════════════════════════════════════════════════════════ */
 
-/* Smooth Apparition Animations */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-up {
-  animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-  opacity: 0;
-  /* Start hidden */
-}
-
-/* Stagger delays */
-.delay-100 {
-  animation-delay: 100ms;
-}
-
-.delay-200 {
-  animation-delay: 200ms;
-}
-
-.delay-300 {
-  animation-delay: 300ms;
-}
-
-.delay-400 {
-  animation-delay: 400ms;
-}
-
-/* 
-  INPUT STYLES 
-  Radius: 16px
-  Transition: Smooth teal glow
-*/
-.custom-input {
+:host {
+  display: block;
   width: 100%;
-  padding: 16px 20px;
-  /* Comfortable padding */
-  border-radius: 16px;
-  /* Strict 16px radius */
-  border: 1px solid transparent;
-  outline: none;
+  background-color: #000000;
+  color: #F5F0E6;
+  font-family: 'Sora', sans-serif;
+  overflow-x: hidden;
+  position: relative;
+}
+
+.cine-contact-root {
+  position: relative;
+  width: 100%;
+  background-color: #000000;
+  padding: 6.5rem 1.5rem 4rem 1.5rem;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* ── Ambient Cinematic Lighting ──────────────────────────────── */
+.contact-ambient {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 50%;
+  filter: blur(140px);
+  z-index: 1;
+  opacity: 0.45;
+}
+
+.contact-ambient--top {
+  top: 0%;
+  left: 10%;
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(circle, rgba(6, 77, 64, 0.22) 0%, transparent 80%);
+}
+
+.contact-ambient--emerald {
+  bottom: 10%;
+  right: -5%;
+  width: 650px;
+  height: 650px;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.12) 0%, transparent 75%);
+}
+
+.contact-ambient--gold {
+  top: 40%;
+  right: 20%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(214, 180, 119, 0.08) 0%, transparent 65%);
+}
+
+/* ── Main Layout Container ───────────────────────────────────── */
+.contact-container {
+  position: relative;
+  z-index: 2;
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6rem;
+}
+
+.contact-split-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 4.5rem;
+  align-items: flex-start;
+}
+
+/* ── Left Column: Editorial & Info ───────────────────────────── */
+.contact-info-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.cine-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.eyebrow-accent-line {
+  display: inline-block;
+  width: 26px;
+  height: 1.5px;
+  background: #D6B477;
+}
+
+.eyebrow-badge {
+  font-family: 'Sora', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  color: #D6B477;
+  text-transform: uppercase;
+}
+
+.eyebrow-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(214, 180, 119, 0.4);
+}
+
+.eyebrow-caption {
+  font-family: 'Sora', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  color: rgba(245, 240, 230, 0.5);
+  text-transform: uppercase;
+}
+
+.contact-main-headline {
+  font-family: 'Petrona', serif;
+  font-size: clamp(2.4rem, 4.5vw, 3.8rem);
+  font-weight: 700;
+  line-height: 1.15;
+  color: #F5F0E6;
+  margin: 0 0 1.5rem 0;
+  letter-spacing: -0.02em;
+}
+
+.gold-gradient-text {
+  background: linear-gradient(135deg, #F5E5C9 0%, #D6B477 50%, #A88647 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline;
+}
+
+.contact-support-text {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: rgba(245, 240, 230, 0.72);
+  margin: 0 0 2.5rem 0;
+  max-width: 580px;
+}
+
+/* Availability Card */
+.availability-status-card {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  background: rgba(6, 77, 64, 0.2);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  border-radius: 12px;
+  padding: 0.9rem 1.4rem;
+  margin-bottom: 2.8rem;
+  max-width: fit-content;
+  backdrop-filter: blur(10px);
+}
+
+.availability-pulsing-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #10B981;
+  box-shadow: 0 0 12px #10B981;
+  animation: pulseDot 2s infinite ease-in-out;
+}
+
+@keyframes pulseDot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.3); opacity: 0.6; }
+}
+
+.availability-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.availability-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: #10B981;
+  text-transform: uppercase;
+}
+
+.availability-detail {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: #F5F0E6;
+}
+
+/* Contact Channels */
+.contact-channels-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-bottom: 2.8rem;
+}
+
+.channel-item-card {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1rem 1.25rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
   transition: all 0.3s ease;
-  font-size: 1rem;
 }
 
-/* Light Mode Input */
-:host-context(html:not(.dark)) .custom-input {
-  background-color: #f1f5f9;
-  /* Slate-100 */
-  color: #334155;
-  /* Slate-700 */
-  border: 1px solid #e2e8f0;
-  /* Slate-200 */
+.channel-item-card:hover {
+  background: rgba(214, 180, 119, 0.04);
+  border-color: rgba(214, 180, 119, 0.25);
+  transform: translateX(4px);
 }
 
-:host-context(html:not(.dark)) .custom-input:focus {
-  background-color: #ffffff;
-  border-color: #0d9488;
-  /* Brand Teal */
-  box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.1);
+.channel-icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: rgba(214, 180, 119, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #D6B477;
+  flex-shrink: 0;
 }
 
-/* Dark Mode Input (Glass) */
-:host-context(html.dark) .custom-input {
-  background-color: rgba(30, 41, 59, 0.5);
-  /* Slate-800/50 */
-  color: #f8fafc;
-  /* Slate-50 */
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(8px);
-  color-scheme: dark;
+.channel-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex-grow: 1;
 }
 
-:host-context(html.dark) .custom-input:focus {
-  background-color: rgba(30, 41, 59, 0.8);
-  border-color: #0d9488;
-  box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.2);
+.channel-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: rgba(245, 240, 230, 0.45);
+  text-transform: uppercase;
 }
 
-/* Fix browser autofill white background override in dark mode */
-:host-context(html.dark) .custom-input:-webkit-autofill,
-:host-context(html.dark) .custom-input:-webkit-autofill:hover,
-:host-context(html.dark) .custom-input:-webkit-autofill:focus,
-:host-context(html.dark) .custom-input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 1000px #1e293b inset !important;
-  box-shadow: 0 0 0 1000px #1e293b inset !important;
-  -webkit-text-fill-color: #f8fafc !important;
-  caret-color: #f8fafc;
-  border-color: rgba(255, 255, 255, 0.2) !important;
-  transition: background-color 5000s ease-in-out 0s;
+.channel-val-link {
+  font-size: 0.95rem;
+  color: #F5F0E6;
+  text-decoration: none;
+  transition: color 0.2s ease;
 }
 
-/* 
-  BUTTON STYLES
-  Radius: 16px
-  Color: #0d9488
-*/
-.btn-primary {
-  background-color: #0d9488;
-  color: white;
-  border-radius: 16px;
-  padding: 16px 32px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 6px -1px rgba(13, 148, 136, 0.3), 0 2px 4px -1px rgba(13, 148, 136, 0.15);
+.channel-val-link:hover {
+  color: #D6B477;
+}
+
+.copy-btn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(245, 240, 230, 0.6);
+  border-radius: 8px;
+  padding: 0.45rem 0.65rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.copy-btn:hover {
+  border-color: #D6B477;
+  color: #D6B477;
+  background: rgba(214, 180, 119, 0.08);
+}
+
+/* Social Strip */
+.social-strip-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.social-strip-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: rgba(245, 240, 230, 0.4);
+  text-transform: uppercase;
+}
+
+.social-pills-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.social-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1.1rem;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #F5F0E6;
+  text-decoration: none;
+  font-size: 0.82rem;
+  font-weight: 500;
+  transition: all 0.25s ease;
+}
+
+.social-pill-btn:hover {
+  background: rgba(214, 180, 119, 0.12);
+  border-color: rgba(214, 180, 119, 0.4);
+  color: #D6B477;
+  transform: translateY(-2px);
+}
+
+/* ── Right Column: Interactive Form Card ─────────────────────── */
+.contact-form-column {
+  position: relative;
+}
+
+.form-stage-card {
+  position: relative;
+  background: rgba(18, 18, 18, 0.6);
+  border: 1px solid rgba(214, 180, 119, 0.18);
+  border-radius: 24px;
+  padding: 3rem 2.5rem;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+.form-card-header {
+  margin-bottom: 2.2rem;
+}
+
+.form-card-title {
+  font-family: 'Petrona', serif;
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: #F5F0E6;
+  margin: 0 0 0.5rem 0;
+}
+
+.form-card-desc {
+  font-size: 0.9rem;
+  color: rgba(245, 240, 230, 0.6);
+  margin: 0;
+}
+
+.cine-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-fields-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.cine-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.cine-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: rgba(245, 240, 230, 0.65);
+  text-transform: uppercase;
+}
+
+.required-star {
+  color: #D6B477;
+}
+
+.cine-input,
+.cine-textarea {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  font-family: 'Sora', sans-serif;
+  font-size: 0.92rem;
+  color: #F5F0E6;
+  box-sizing: border-box;
+  transition: all 0.25s ease;
+  outline: none;
+}
+
+.cine-textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.cine-input:focus,
+.cine-textarea:focus {
+  border-color: #D6B477;
+  background: rgba(0, 0, 0, 0.7);
+  box-shadow: 0 0 15px rgba(214, 180, 119, 0.15);
+}
+
+.cine-field-counter {
+  font-size: 0.7rem;
+  color: rgba(245, 240, 230, 0.4);
+  align-self: flex-end;
+}
+
+.form-footer-action {
+  margin-top: 0.5rem;
+}
+
+.cine-submit-btn {
+  width: 100%;
+  padding: 1rem 1.75rem;
+  background: linear-gradient(135deg, #D6B477 0%, #B8934A 100%);
   border: none;
+  border-radius: 12px;
+  color: #000000;
+  font-family: 'Sora', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 0.75rem;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 10px 25px rgba(214, 180, 119, 0.25);
 }
 
-.btn-primary:hover {
-  background-color: #0f766e;
-  /* Teal-700 */
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 10px 15px -3px rgba(13, 148, 136, 0.4), 0 4px 6px -2px rgba(13, 148, 136, 0.2);
+.cine-submit-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(214, 180, 119, 0.35);
+  background: linear-gradient(135deg, #F0D59D 0%, #D6B477 100%);
 }
 
-.btn-primary:active {
-  transform: translateY(0) scale(0.98);
+.cine-submit-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
 }
 
-/* Floating Label Animation Wrapper */
-.input-group {
-  position: relative;
-  margin-bottom: 8px;
+.submit-spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(0, 0, 0, 0.25);
+  border-top-color: #000000;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
 }
 
-.input-group label {
-  position: absolute;
-  left: 20px;
-  top: 18px;
-  color: #94a3b8;
-  /* Slate-400 */
-  pointer-events: none;
-  transition: 0.2s ease all;
-  background-color: transparent;
-  padding: 0 4px;
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
-/* Float label when focused or valid */
-.custom-input:focus~label,
-.custom-input:not(:placeholder-shown)~label {
-  top: -10px;
-  font-size: 12px;
-  font-weight: 600;
-  color: #0d9488;
-  background-color: transparent;
-  /* Assuming container bg handles it, or text handles it */
+.form-response-alert {
+  margin-top: 1rem;
+  padding: 0.85rem 1.25rem;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  text-align: center;
 }
 
-/* Fix for label background in inputs */
-:host-context(html:not(.dark)) .custom-input:focus~label,
-:host-context(html:not(.dark)) .custom-input:not(:placeholder-shown)~label {
-  background-color: white;
-  /* Match light card */
+.form-response-alert.success {
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: #10B981;
 }
 
-:host-context(html.dark) .custom-input:focus~label,
-:host-context(html.dark) .custom-input:not(:placeholder-shown)~label {
-  background-color: #1e293b;
-  /* Match dark card */
+.form-response-alert.error {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: #EF4444;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
+/* ── Footer Strip ────────────────────────────────────────────── */
+.contact-bottom-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 2.5rem;
+}
+
+.footer-inner-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-brand {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+
+.footer-name {
+  font-family: 'Petrona', serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #F5F0E6;
+}
+
+.footer-role {
+  font-size: 0.72rem;
+  color: #D6B477;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.footer-copy {
+  font-size: 0.75rem;
+  color: rgba(245, 240, 230, 0.4);
+}
+
+/* ── Responsiveness ──────────────────────────────────────────── */
+@media (max-width: 992px) {
+  .contact-split-grid {
+    grid-template-columns: 1fr;
+    gap: 3.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .cine-contact-root {
+    padding: 4.5rem 1rem 3rem 1rem;
   }
 
-  to {
-    opacity: 1;
+  .form-stage-card {
+    padding: 2rem 1.5rem;
   }
-}
 
-.animate-fade-in {
-  animation: fadeIn 0.5s ease-out forwards;
+  .form-fields-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-inner-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
 }

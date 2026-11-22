@@ -1,19 +1,11 @@
+<app-intro (introComplete)="homeComp.playCinematicEntrance()"></app-intro>
 <app-navbar />
 <section id="home" class="scroll-mt-24">
-    <app-home></app-home>
+    <app-home #homeComp></app-home>
 </section>
 
 <section id="about" class="scroll-mt-20">
     <app-about></app-about>
-</section>
-
-<section id="skills" class="scroll-mt-20">
-    <app-skills></app-skills>
-</section>
-
-<section id="experience" class="scroll-mt-20">
-    <div id="services"></div>
-    <app-services></app-services>
 </section>
 
 <section id="projects" class="scroll-mt-20">

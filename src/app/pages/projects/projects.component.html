@@ -1,69 +1,148 @@
-<section class="w-full min-h-screen flex flex-col justify-center bg-[var(--color-bg)] px-6 md:px-20 py-16">
+  <!-- ═══════════════════════════════════════════════════════════════
+     PREMIUM CINEMATIC PROJECTS SHOWCASE
+     Theme: Pure Black (#000000) · Champagne Gold (#D6B477) · Deep Emerald (#064D40)
+     Typography: Petrona (Editorial Serif) · Sora (Technical Sans-serif)
+     Asymmetrical Showcase Rows, Parallax Frames & 3D Interactive Hover
+     ═══════════════════════════════════════════════════════════════ -->
 
-    <div class="w-full max-w-7xl mx-auto flex flex-col justify-center mb-0 text-left mt-10">
-        <p class="text-sm font-bold text-[var(--color-accent)] reveal animate-right tracking-widest">
-            My Creations
-        </p>
-        <div class="text-4xl font-bold text-[var(--color-primary)] text-left reveal animate-right delay-[200ms]">
-            Latest Projects
-            <div class="mt-3 border-t-2 border-[var(--color-accent)] w-20"></div>
-        </div>
-    </div>
+  <div class="cine-projects-root" #projectsRoot aria-label="Selected Works by Ramumanimehalai M">
 
-    <div class="w-full flex flex-wrap justify-center gap-8 mt-10 pb-12">
-        @for (project of projects; track project.title) {
-        <div
-            class="group relative w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.334rem)] bg-[#f8fafc] dark:bg-[#1e293b] rounded-2xl overflow-hidden shadow-md hover:shadow-2xl hover:shadow-teal-900/10 transition-all duration-500 hover:-translate-y-2 border border-slate-200 dark:border-slate-700 flex flex-col reveal animate-up">
+        <!-- Ambient Cinematic Stage Lighting -->
+        <div class="projects-ambient projects-ambient--top" aria-hidden="true"></div>
+        <div class="projects-ambient projects-ambient--mid" aria-hidden="true"></div>
+        <div class="projects-ambient projects-ambient--bottom" aria-hidden="true"></div>
 
-            <!-- Top Accent Line -->
-            <div class="h-1.5 w-full bg-[var(--color-accent)]"></div>
+        <div class="projects-container">
 
-            <!-- Image Section -->
-            <div class="relative h-52 w-full overflow-hidden bg-slate-200">
-                <img [src]="project.image" [alt]="project.title"
-                    class="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-110">
+            <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+         SECTION HEADER: EDITORIAL TYPOGRAPHY
+         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+            <header class="projects-editorial-header">
+              <div class="cine-eyebrow animate-header-elem">
+                <span class="eyebrow-accent-line" aria-hidden="true"></span>
+                <span class="eyebrow-badge">SELECTED WORKS</span>
+                <span class="eyebrow-dot" aria-hidden="true"></span>
+                <span class="eyebrow-caption">FEATURED PORTFOLIO</span>
+              </div>
 
-                <!-- Overlay with Button -->
-                @if (project.link) {
-                <div
-                    class="absolute inset-0 bg-slate-900/20 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-10">
-                    <a [href]="project.link" target="_blank"
-                        class="px-6 py-2.5 bg-gradient-to-r from-teal-500 to-teal-700 text-white text-sm font-semibold rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 hover:scale-105 hover:shadow-teal-500/30 flex items-center gap-2">
-                        View Project
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="lucide lucide-external-link">
-                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                            <polyline points="15 3 21 3 21 9" />
-                            <line x1="10" y1="14" x2="21" y2="3" />
+              <h2 class="projects-main-title animate-header-elem">
+                Building Digital <span class="gold-gradient-text">Experiences.</span>
+              </h2>
+
+              <p class="projects-lead-desc animate-header-elem">
+                A curated selection of production mobile applications, digital banking web platforms, and enterprise CRM
+                solutions engineered for performance, reliability, and human-centric design.
+              </p>
+            </header>
+
+            <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+         ASYMMETRICAL FULL-WIDTH PROJECT SHOWCASE ROWS
+         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+            <div class="projects-showcase-list">
+              @for (project of projects; track project.id; let idx = $index; let isEven = $even) {
+              <article class="project-showcase-row" [class.project-showcase-row--reverse]="!isEven" [id]="project.id">
+
+                <!-- Media Column: Interactive 3D Parallax Stage -->
+                <div class="project-media-column">
+                  <div class="project-media-frame">
+                    <div class="media-ambient-glow" aria-hidden="true"></div>
+
+                    <div class="media-inner-container">
+                      <img [src]="project.image" [alt]="project.title + ' preview'" class="project-showcase-img"
+                        loading="lazy" />
+
+                      <!-- Luxury Lens Reflection & Cinematic Vignette -->
+                      <div class="media-lens-reflection" aria-hidden="true"></div>
+                      <div class="media-vignette-overlay" aria-hidden="true"></div>
+
+                      <!-- Floating Status Pill on Media -->
+                      <div class="media-status-pill">
+                        <span class="status-pip-dot" aria-hidden="true"></span>
+                        <span class="status-text">{{ project.status }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                  <!-- Editorial Details Column -->
+                  <div class="project-editorial-details">
+
+                    <!-- Watermark Project Number -->
+                    <div class="project-num-watermark" aria-hidden="true">
+                      {{ project.num }}
+                    </div>
+
+                    <!-- Metadata Header -->
+                    <div class="project-meta-strip">
+                      <span class="project-index-label">{{ project.num }} / 03</span>
+                      <span class="project-meta-sep" aria-hidden="true">·</span>
+                      <span class="project-category-label">{{ project.category }}</span>
+                    </div>
+
+                    <!-- Project Title -->
+                    <h3 class="project-title">{{ project.title }}</h3>
+
+                    <!-- Role Attribution -->
+                    <div class="project-role-badge">
+                      <span class="role-icon" aria-hidden="true">✦</span>
+                      <span class="role-text">ROLE: {{ project.role }}</span>
+                    </div>
+
+                    <!-- Editorial Description -->
+                    <p class="project-description-text">
+                      {{ project.description }}
+                    </p>
+
+                    <!-- Technology Stack Chips -->
+                    <div class="project-tech-stack">
+                      @for (tech of project.tech; track tech) {
+                      <span class="project-tech-chip">
+                        <span class="tech-chip-dot" aria-hidden="true"></span>
+                        <span class="tech-chip-name">{{ tech }}</span>
+                      </span>
+                      }
+                    </div>
+
+                    <!-- Action Links / Status Indicator -->
+                    <div class="project-actions-row">
+                      @if (project.link) {
+                      <a [href]="project.link" target="_blank" rel="noopener noreferrer"
+                        class="project-action-btn project-action-btn--primary">
+                        <span>VIEW LIVE SYSTEM</span>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <line x1="7" y1="17" x2="17" y2="7"></line>
+                          <polyline points="7 7 17 7 17 17"></polyline>
                         </svg>
-                    </a>
-                </div>
-                }
+                      </a>
+                      } @else {
+                      <div class="enterprise-confidential-pill">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
+                        <span>ENTERPRISE PRODUCTION DEPLOYMENT</span>
+                      </div>
+                      }
+
+                      <a href="#contact" class="project-action-btn project-action-btn--ghost"
+                        (click)="scrollTo('contact', $event)">
+                        <span>DISCUSS ARCHITECTURE</span>
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <line x1="5" y1="12" x2="19" y2="12"></line>
+                          <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                      </a>
+                    </div>
+
+                  </div>
+
+              </article>
+              }
             </div>
 
-            <!-- Content Section -->
-            <div class="p-6 flex flex-col flex-grow relative">
-                <h3
-                    class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-2 group-hover:text-teal-600 transition-colors">
-                    {{project.title}}
-                </h3>
+</div>
 
-                <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-4 line-clamp-3">
-                    {{project.description}}
-                </p>
-
-                <!-- Tags / Tech -->
-                <div class="mt-auto pt-4 border-t border-[var(--color-accent)]/20 flex flex-wrap gap-2">
-                    @for (item of project.tech; track item) {
-                    <span
-                        class="px-3 py-1 text-[11px] font-bold tracking-wider uppercase bg-[#0d9488] text-white rounded-md transition-all duration-300 hover:bg-[#0f766e] hover:-translate-y-0.5 hover:shadow-lg cursor-default select-none shadow-md">
-                        {{item}}
-                    </span>
-                    }
-                </div>
-            </div>
-        </div>
-        }
-    </div>
-</section>
+</div>

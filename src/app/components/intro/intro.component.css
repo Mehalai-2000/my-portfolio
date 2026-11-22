@@ -1,0 +1,289 @@
+/* ═══════════════════════════════════════════════════════════════
+   CINEMATIC INTRO COMPONENT STYLES
+   Theme: Pure Black (#000000) · Champagne Gold (#D6B477)
+   Typography: Petrona (Editorial Serif) · Sora (Meta labels)
+   Kinetic Physics & Dropping Letter Choreography
+   ═══════════════════════════════════════════════════════════════ */
+
+:host {
+  display: block;
+}
+
+.cinematic-intro-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #000000;
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: pointer;
+  user-select: none;
+  transform-origin: center center;
+  will-change: transform, opacity, filter;
+}
+
+.cinematic-intro-overlay.is-hidden {
+  display: none !important;
+  pointer-events: none !important;
+}
+
+/* ── Ambient Cinematic Auras ─────────────────────────────────── */
+.intro-aura {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(120px);
+}
+
+.intro-aura--center {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 650px;
+  height: 420px;
+  background: radial-gradient(circle, rgba(214, 180, 119, 0.18) 0%, rgba(6, 77, 64, 0.16) 50%, transparent 75%);
+  opacity: 0.35;
+}
+
+.intro-aura--emerald {
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 850px;
+  height: 520px;
+  background: radial-gradient(circle, rgba(6, 77, 64, 0.22) 0%, transparent 70%);
+  opacity: 0.3;
+}
+
+.intro-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at center, transparent 35%, rgba(0, 0, 0, 0.88) 100%);
+}
+
+/* ── Central Morphing Stage ──────────────────────────────────── */
+.intro-morph-stage {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 1300px;
+  padding: 0 1.5rem;
+  box-sizing: border-box;
+  overflow: visible;
+}
+
+/* Top Meta Pill */
+.intro-meta-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(214, 180, 119, 0.22);
+  border-radius: 20px;
+  padding: 0.35rem 0.95rem;
+  margin-bottom: 2.2rem;
+  backdrop-filter: blur(12px);
+  will-change: opacity, transform;
+}
+
+.meta-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #D6B477;
+}
+
+.meta-text {
+  font-family: 'Sora', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  color: #D6B477;
+  text-transform: uppercase;
+}
+
+/* Staging Box for overlapping dual words */
+.morph-word-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 130px;
+  width: 100%;
+  overflow: visible;
+}
+
+.word-track {
+  font-family: 'Petrona', serif;
+  font-size: clamp(1.8rem, 4.6vw, 4.4rem);
+  font-weight: 700;
+  line-height: 1;
+  color: #F5F0E6;
+  text-transform: uppercase;
+  letter-spacing: clamp(0.04em, 0.18vw, 0.14em);
+  box-sizing: border-box;
+  white-space: nowrap;
+  overflow: visible;
+}
+
+/* 1. Name Track */
+.word-track--name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.08rem, 0.25vw, 0.35rem);
+  position: relative;
+  z-index: 3;
+  overflow: visible;
+}
+
+/* 2. Portfolio Track (Overlapping in the exact same spot) */
+.word-track--portfolio {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.2rem, 0.75vw, 0.85rem);
+  z-index: 2;
+  transform-origin: center center;
+  overflow: visible;
+}
+
+/* Individual Morphing Characters */
+.morph-char {
+  display: inline-block;
+  position: relative;
+  will-change: transform, opacity, filter;
+  color: #F5F0E6;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+/* Target Characters in PORTFOLIO */
+.port-char {
+  color: #F5F0E6;
+  text-shadow: 0 0 25px rgba(214, 180, 119, 0.45);
+}
+
+/* Target Letter 'I' specific styling */
+.port-char--i {
+  position: relative;
+}
+
+/* Impact Shockwave Ring for falling 'I' */
+.impact-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 36px;
+  height: 36px;
+  transform: translate(-50%, -50%) scale(0);
+  border: 2px solid rgba(214, 180, 119, 0.95);
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  box-shadow: 0 0 20px rgba(214, 180, 119, 0.9), inset 0 0 10px rgba(214, 180, 119, 0.7);
+  z-index: -1;
+}
+
+/* Gold Flare Sweep Line */
+.gold-flare-sweep {
+  position: absolute;
+  top: 5%;
+  bottom: 5%;
+  width: 90px;
+  background: linear-gradient(90deg, transparent 0%, rgba(214, 180, 119, 0.9) 50%, transparent 100%);
+  filter: blur(8px);
+  pointer-events: none;
+  opacity: 0;
+  z-index: 10;
+}
+
+/* Bottom Subtext */
+.intro-bottom-subtext {
+  margin-top: 2.2rem;
+  font-family: 'Sora', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  color: rgba(245, 240, 230, 0.55);
+  text-transform: uppercase;
+  will-change: opacity, transform;
+}
+
+/* Subtle Skip Prompt (Bottom Right) */
+.intro-skip-prompt {
+  position: absolute;
+  bottom: 2rem;
+  right: 2.5rem;
+  font-family: 'Sora', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  color: rgba(245, 240, 230, 0.35);
+  transition: color 0.3s ease;
+  z-index: 15;
+}
+
+.cinematic-intro-overlay:hover .intro-skip-prompt {
+  color: #D6B477;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   RESPONSIVENESS & ACCESSIBILITY
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@media (max-width: 768px) {
+  .word-track {
+    font-size: clamp(1.2rem, 5.2vw, 2.2rem);
+    letter-spacing: 0.04em;
+  }
+
+  .word-track--name {
+    gap: 1px;
+  }
+
+  .word-track--portfolio {
+    gap: 3px;
+  }
+
+  .intro-meta-pill {
+    margin-bottom: 1.5rem;
+    padding: 0.25rem 0.75rem;
+  }
+
+  .meta-text {
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+  }
+
+  .intro-bottom-subtext {
+    margin-top: 1.5rem;
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+  }
+
+  .intro-skip-prompt {
+    bottom: 1.25rem;
+    right: 1.25rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cinematic-intro-overlay {
+    display: none !important;
+  }
+}

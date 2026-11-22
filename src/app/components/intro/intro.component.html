@@ -1,0 +1,69 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     CINEMATIC INTRO: NAME-TO-PORTFOLIO TEXT MORPH
+     Theme: Pure Black Studio (#000000) · Champagne Gold (#D6B477)
+     Typography: Petrona (Editorial Serif)
+     Continuous Physics-Driven Letter Rearrangement & "I" Drop Animation
+     ═══════════════════════════════════════════════════════════════ -->
+
+<div class="cinematic-intro-overlay" #introOverlay (click)="skipIntro()" [class.is-hidden]="isFinished"
+  role="presentation" aria-label="Portfolio Introduction Animation">
+
+  <!-- Ambient Golden & Emerald Atmospheric Auras -->
+  <div class="intro-aura intro-aura--center" #ambientAura aria-hidden="true"></div>
+  <div class="intro-aura intro-aura--emerald" aria-hidden="true"></div>
+
+  <!-- Subtle Cinematic Letterbox Vignette -->
+  <div class="intro-vignette" aria-hidden="true"></div>
+
+  <!-- Central Morphing Stage -->
+  <div class="intro-morph-stage">
+
+    <!-- Subtle Eyebrow Tag -->
+      <div class="intro-meta-pill" #metaPill aria-hidden="true">
+        <span class="meta-dot"></span>
+        <span class="meta-text">RAMUMANIMEHALAI · PORTFOLIO</span>
+        <span class="meta-dot"></span>
+      </div>
+
+      <!-- The Dual Word Staging Frame -->
+      <div class="morph-word-box">
+
+        <!-- 1. Source Word: RAMUMANIMEHALAI -->
+        <div class="word-track word-track--name" #nameContainer>
+          @for (item of nameLetters; track item.id; let idx = $index) {
+          <span class="morph-char name-char" [attr.data-char]="item.char" [attr.data-index]="idx" [attr.id]="item.id">{{
+            item.char }}</span>
+          }
+        </div>
+
+        <!-- 2. Target Word: PORTFOLIO -->
+        <div class="word-track word-track--portfolio" #portfolioContainer>
+          @for (item of portfolioLetters; track item.id; let idx = $index) {
+          <span class="morph-char port-char" [class.port-char--i]="item.char === 'I'" [attr.data-char]="item.char"
+          >
+          {{ item.char }}
+          @if (item.char === 'I') {
+          <span class="impact-ring" #impactRing aria-hidden="true"></span>
+          }
+          </span>
+          }
+        </div>
+
+        <!-- Golden Light Flare Sweep -->
+        <div class="gold-flare-sweep" aria-hidden="true"></div>
+
+      </div>
+
+      <!-- Small Subtitle Accent Line -->
+        <div class="intro-bottom-subtext" #subtext aria-hidden="true">
+          <span>ANGULAR / FRONTEND DEVELOPER</span>
+        </div>
+
+      </div>
+
+      <!-- Subtle Skip Prompt -->
+      <div class="intro-skip-prompt" aria-hidden="true">
+        <span>CLICK ANYWHERE TO SKIP</span>
+      </div>
+
+    </div>
