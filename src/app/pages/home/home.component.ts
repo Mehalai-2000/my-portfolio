@@ -1,12 +1,20 @@
 import {
   Component, ElementRef, ViewChild,
-  AfterViewInit, OnDestroy, NgZone
+  AfterViewInit, OnDestroy, NgZone, Inject, PLATFORM_ID
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
+
+export interface NameCharConfig {
+  char: string;
+  dir: 'left' | 'right' | 'top' | 'bottom';
+  startX: number;
+  startY: number;
+  rotation: number;
+}
 
 @Component({
   selector: 'app-home',
@@ -25,8 +33,24 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
   talkButtonLabel = 'TALK TO ME';
   isTalkPlaying = false;
 
-  // ── Name Characters (Sequential Letter-by-Letter Reveal) ─────────
-  readonly nameCharacters: string[] = 'RAMUMANIMEHALAI'.split('');
+  // ── Cinematic Multi-Directional Name Characters (15 letters) ────
+  readonly nameCharacters: NameCharConfig[] = [
+    { char: 'R', dir: 'left', startX: -130, startY: -15, rotation: -16 },
+    { char: 'A', dir: 'top', startX: 12, startY: -90, rotation: 14 },
+    { char: 'M', dir: 'bottom', startX: -16, startY: 90, rotation: -12 },
+    { char: 'U', dir: 'right', startX: 120, startY: 12, rotation: 15 },
+    { char: 'M', dir: 'top', startX: -12, startY: -100, rotation: -14 },
+    { char: 'A', dir: 'bottom', startX: 16, startY: 85, rotation: 12 },
+    { char: 'N', dir: 'left', startX: -115, startY: 10, rotation: -14 },
+    { char: 'I', dir: 'top', startX: 0, startY: -110, rotation: 8 },
+    { char: 'M', dir: 'right', startX: 130, startY: -16, rotation: 16 },
+    { char: 'E', dir: 'bottom', startX: -12, startY: 95, rotation: -12 },
+    { char: 'H', dir: 'top', startX: 14, startY: -90, rotation: 12 },
+    { char: 'A', dir: 'left', startX: -120, startY: -12, rotation: -15 },
+    { char: 'L', dir: 'bottom', startX: 12, startY: 90, rotation: 12 },
+    { char: 'A', dir: 'right', startX: 125, startY: 14, rotation: 16 },
+    { char: 'I', dir: 'top', startX: -6, startY: -100, rotation: -8 }
+  ];
 
   // ── Word-Level Staggered Description ────────────────────────────
   readonly descWords: string[] = [
@@ -35,7 +59,7 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
   ];
 
   // ── Frame Sequence Constants ───────────────────────────────────
-  // 131 frames of clean, forward-walking footage facing directly toward camera
+  // 131 frames of clean, forward-walking sequence facing directly toward camera (straight walk)
   readonly TOTAL_FRAMES = 131;
   private readonly CANVAS_WIDTH = 1920;
   private readonly CANVAS_HEIGHT = 1080;
@@ -44,6 +68,7 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
   private isBrowser: boolean;
   private images: (HTMLImageElement | null)[] = new Array(this.TOTAL_FRAMES).fill(null);
   private loadedIndices = new Set<number>();
+  private loadingPromises = new Map<number, Promise<HTMLImageElement>>();
   private ctx: CanvasRenderingContext2D | null = null;
   private targetFrameIndex = 0;
   private currentInterpolatedFrame = 0;
@@ -58,20 +83,34 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
   private entrancePlayed = false;
   private fallbackTimer: any = null;
 
-  constructor(private zone: NgZone) {
-    this.isBrowser = typeof window !== 'undefined';
+  constructor(
+    private zone: NgZone,
+    @Inject(PLATFORM_ID) platformId: object
+  ) {
+    this.isBrowser = isPlatformBrowser(platformId);
   }
 
   ngAfterViewInit(): void {
     if (!this.isBrowser) return;
 
-    // Run outside Angular Zone to achieve buttery 60-120fps with zero change detection overhead
+    // Run canvas initialization outside Angular zone for max 60-120fps performance
     this.zone.runOutsideAngular(() => {
       this.initCanvasAndScroller();
-      this.setupIntroAnimationListener();
+
+      // Pre-position animated elements to prevent initial visual flash
+      requestAnimationFrame(() => {
+        this.prepareElementsForEntrance();
+      });
     });
 
     this.initTalkVideo();
+
+    // Fallback safety: If intro doesn't trigger entrance within 5.2s, play automatically
+    this.fallbackTimer = setTimeout(() => {
+      if (!this.entrancePlayed) {
+        this.playCinematicEntrance();
+      }
+    }, 5200);
   }
 
   ngOnDestroy(): void {
@@ -80,6 +119,11 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
     if (this.fallbackTimer) {
       clearTimeout(this.fallbackTimer);
       this.fallbackTimer = null;
+    }
+
+    if (this.entranceTimeline) {
+      this.entranceTimeline.kill();
+      this.entranceTimeline = null;
     }
 
     if (this.rafId !== null) {
@@ -92,11 +136,6 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
       this.scrollTriggerInstance = null;
     }
 
-    if (this.entranceTimeline) {
-      this.entranceTimeline.kill();
-      this.entranceTimeline = null;
-    }
-
     const talkVideo = this.talkVideoRef?.nativeElement;
     if (talkVideo && this.talkEndedHandler) {
       talkVideo.removeEventListener('ended', this.talkEndedHandler);
@@ -105,39 +144,98 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
 
     this.images.length = 0;
     this.loadedIndices.clear();
+    this.loadingPromises.clear();
   }
 
-  // ── Setup Intro Animation Completed / Skipped Listener ──────────
-  private setupIntroAnimationListener(): void {
-    // If intro was already finished/skipped in session or doesn't exist
-    if ((window as any).__introFinished) {
-      this.animateHeroEntrance();
+  // ── Prepare Elements Initial Hidden State ───────────────────────
+  private prepareElementsForEntrance(): void {
+    const hero = this.heroSectionRef?.nativeElement;
+    if (!hero) return;
+
+    const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced) {
+      this.showStaticElements();
       return;
     }
 
-    // Listen for custom event dispatched by IntroComponent
-    const handleIntroDone = () => {
-      window.removeEventListener('introAnimationComplete', handleIntroDone);
-      this.animateHeroEntrance();
-    };
-    window.addEventListener('introAnimationComplete', handleIntroDone);
+    const salutation = hero.querySelector('.hero-salutation');
+    const salutationLine = hero.querySelector('.salutation-line');
+    const nameChars = hero.querySelectorAll<HTMLElement>('.hero-name-char');
+    const titleAngular = hero.querySelector<HTMLElement>('.hero-title-word--angular');
+    const titleSep = hero.querySelector<HTMLElement>('.hero-title-sep');
+    const titleFrontend = hero.querySelector<HTMLElement>('.hero-title-word--frontend');
+    const titleDeveloper = hero.querySelector<HTMLElement>('.hero-title-word--developer');
+    const separator = hero.querySelector<HTMLElement>('.gold-separator');
+    const descWords = hero.querySelectorAll<HTMLElement>('.hero-desc-word');
+    const btnPrimary = hero.querySelector<HTMLElement>('.btn-primary');
+    const btnTalk = hero.querySelector<HTMLElement>('.btn-talk');
+    const socialLinks = hero.querySelectorAll<HTMLElement>('.hero-socials .social-link');
+    const scrollIndicator = hero.querySelector<HTMLElement>('.hero-scroll');
 
-    // Fallback: If intro doesn't fire within 5 seconds, animate hero anyway
-    this.fallbackTimer = setTimeout(() => {
-      if (!this.entrancePlayed) {
-        this.animateHeroEntrance();
-      }
-    }, 4500);
+    // Salutation
+    if (salutation) gsap.set(salutation, { opacity: 0, x: -30 });
+    if (salutationLine) gsap.set(salutationLine, { scaleX: 0, opacity: 0 });
+
+    // Name characters: multi-directional flying start points
+    nameChars.forEach((el, idx) => {
+      const cfg = this.nameCharacters[idx] || { startX: 0, startY: 30, rotation: 0 };
+      gsap.set(el, {
+        x: cfg.startX,
+        y: cfg.startY,
+        rotation: cfg.rotation,
+        opacity: 0,
+        scale: 0.85,
+        filter: 'blur(8px)'
+      });
+    });
+
+    // Title words (Angular/Frontend left, Developer right)
+    if (titleAngular) gsap.set(titleAngular, { x: -65, opacity: 0, scale: 0.94, filter: 'blur(6px)' });
+    if (titleSep) gsap.set(titleSep, { scale: 0.3, opacity: 0 });
+    if (titleFrontend) gsap.set(titleFrontend, { x: -55, opacity: 0, scale: 0.94, filter: 'blur(6px)' });
+    if (titleDeveloper) gsap.set(titleDeveloper, { x: 65, opacity: 0, scale: 0.94, filter: 'blur(6px)' });
+    if (separator) gsap.set(separator, { scaleX: 0, opacity: 0 });
+
+    // Description words (alternating bottom & left)
+    descWords.forEach((word, idx) => {
+      const isEven = idx % 2 === 0;
+      gsap.set(word, {
+        y: isEven ? 22 : 0,
+        x: isEven ? 0 : -18,
+        opacity: 0,
+        filter: 'blur(4px)'
+      });
+    });
+
+    // Buttons & Socials
+    if (btnPrimary) gsap.set(btnPrimary, { y: 28, opacity: 0, scale: 0.94 });
+    if (btnTalk) gsap.set(btnTalk, { y: 28, opacity: 0, scale: 0.94 });
+    if (socialLinks.length) gsap.set(socialLinks, { y: 20, opacity: 0, scale: 0.9 });
+    if (scrollIndicator) gsap.set(scrollIndicator, { y: 15, opacity: 0 });
   }
 
-  // ── Public trigger invoked by AppComponent upon Intro Completion ──
+  // ── Show Static Elements (Reduced Motion or Instant Fallback) ──
+  private showStaticElements(): void {
+    const hero = this.heroSectionRef?.nativeElement;
+    if (!hero) return;
+
+    const allAnimated = hero.querySelectorAll(
+      '.hero-salutation, .salutation-line, .hero-name-char, .hero-title-word, .hero-title-sep, .gold-separator, .hero-desc-word, .btn-primary, .btn-talk, .social-link, .hero-scroll'
+    );
+    gsap.set(allAnimated, {
+      opacity: 1,
+      x: 0,
+      y: 0,
+      scale: 1,
+      rotation: 0,
+      filter: 'none',
+      clearProps: 'all'
+    });
+  }
+
+  // ── Play Cinematic Advanced Text Entrance Timeline ──────────────
   playCinematicEntrance(): void {
-    this.animateHeroEntrance();
-  }
-
-  // ── Sequential Animated Typography Reveal (GSAP Timeline) ───────
-  private animateHeroEntrance(): void {
-    if (this.entrancePlayed || this.destroyed) return;
+    if (this.entrancePlayed || this.destroyed || !this.isBrowser) return;
     this.entrancePlayed = true;
 
     if (this.fallbackTimer) {
@@ -145,80 +243,53 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
       this.fallbackTimer = null;
     }
 
+    const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced) {
+      this.showStaticElements();
+      return;
+    }
+
     const hero = this.heroSectionRef?.nativeElement;
     if (!hero) return;
 
     this.zone.runOutsideAngular(() => {
-      const bgTypography = hero.querySelector('.hero-bg-typography') as HTMLElement;
-      const salutation = hero.querySelector('.hero-salutation') as HTMLElement;
-      const salutationLine = hero.querySelector('.salutation-line') as HTMLElement;
-      const nameChars = hero.querySelectorAll('.hero-name-char');
-      const titleAngular = hero.querySelector('.hero-title-word--angular') as HTMLElement;
-      const titleSep = hero.querySelector('.hero-title-sep') as HTMLElement;
-      const titleFrontend = hero.querySelector('.hero-title-word--frontend') as HTMLElement;
-      const titleDeveloper = hero.querySelector('.hero-title-word--developer') as HTMLElement;
-      const separator = hero.querySelector('.gold-separator') as HTMLElement;
-      const descWords = hero.querySelectorAll('.hero-desc-word');
-      const btnPrimary = hero.querySelector('.btn-primary') as HTMLElement;
-      const btnTalk = hero.querySelector('.btn-talk') as HTMLElement;
-      const statusPill = hero.querySelector('.hero-status-pill') as HTMLElement;
-      const socialLinks = hero.querySelectorAll('.social-link');
-      const editorialBadge = (hero.querySelector('.hero-stats-row') || hero.querySelector('.hero-editorial-badge')) as HTMLElement;
-      const scrollIndicator = hero.querySelector('.hero-scroll') as HTMLElement;
+      setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 120);
 
-      const titleElements = [titleAngular, titleSep, titleFrontend, titleDeveloper].filter(Boolean);
-
-      // Check user reduced motion preference
-      const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (prefersReducedMotion) {
-        gsap.set(
-          [bgTypography, salutation, salutationLine, ...Array.from(nameChars), ...titleElements, separator, ...Array.from(descWords), btnPrimary, btnTalk, statusPill, ...Array.from(socialLinks), editorialBadge, scrollIndicator],
-          { opacity: 1, x: 0, y: 0, scale: 1, scaleX: 1, filter: 'none', clearProps: 'transform,filter,opacity' }
-        );
-        return;
-      }
-
-      // Initial state: hidden with smooth slide-up offsets
-      if (bgTypography) gsap.set(bgTypography, { opacity: 0, scale: 0.95 });
-      if (salutation) gsap.set(salutation, { opacity: 0, y: 15 });
-      if (salutationLine) gsap.set(salutationLine, { scaleX: 0, transformOrigin: 'left center', opacity: 0 });
-      gsap.set(nameChars, { opacity: 0, y: 28, filter: 'blur(6px)' });
-      gsap.set(titleElements, { opacity: 0, y: 18 });
-      if (separator) gsap.set(separator, { scaleX: 0, transformOrigin: 'left center', opacity: 0 });
-      gsap.set(descWords, { opacity: 0, y: 14, filter: 'blur(3px)' });
-      gsap.set([btnPrimary, btnTalk].filter(Boolean), { opacity: 0, y: 18, scale: 0.96 });
-      if (statusPill) gsap.set(statusPill, { opacity: 0, y: 12 });
-      if (socialLinks.length) gsap.set(socialLinks, { opacity: 0, y: 12 });
-      if (editorialBadge) gsap.set(editorialBadge, { opacity: 0, x: 20 });
-      if (scrollIndicator) gsap.set(scrollIndicator, { opacity: 0, y: 12 });
+      const salutation = hero.querySelector('.hero-salutation');
+      const salutationLine = hero.querySelector('.salutation-line');
+      const nameChars = hero.querySelectorAll<HTMLElement>('.hero-name-char');
+      const titleAngular = hero.querySelector<HTMLElement>('.hero-title-word--angular');
+      const titleSep = hero.querySelector<HTMLElement>('.hero-title-sep');
+      const titleFrontend = hero.querySelector<HTMLElement>('.hero-title-word--frontend');
+      const titleDeveloper = hero.querySelector<HTMLElement>('.hero-title-word--developer');
+      const separator = hero.querySelector<HTMLElement>('.gold-separator');
+      const descWords = hero.querySelectorAll<HTMLElement>('.hero-desc-word');
+      const btnPrimary = hero.querySelector<HTMLElement>('.btn-primary');
+      const btnTalk = hero.querySelector<HTMLElement>('.btn-talk');
+      const socialLinks = hero.querySelectorAll<HTMLElement>('.hero-socials .social-link');
+      const scrollIndicator = hero.querySelector<HTMLElement>('.hero-scroll');
 
       this.entranceTimeline = gsap.timeline({
         onComplete: () => {
+          // Clear animation transform props to guarantee 100% crisp CSS hover and subpixel rendering
           gsap.set(
-            [salutation, salutationLine, ...Array.from(nameChars), ...titleElements, separator, ...Array.from(descWords), btnPrimary, btnTalk, statusPill, ...Array.from(socialLinks), editorialBadge, scrollIndicator],
-            { clearProps: 'transform,filter' }
+            [salutation, salutationLine, ...Array.from(nameChars), titleAngular, titleSep, titleFrontend, titleDeveloper, separator, ...Array.from(descWords), btnPrimary, btnTalk, ...Array.from(socialLinks), scrollIndicator],
+            { clearProps: 'transform,filter,opacity' }
           );
+          ScrollTrigger.refresh();
         }
       });
 
-      // 0.0s: Background PORTFOLIO typography depth reveal
-      if (bgTypography) {
-        this.entranceTimeline.to(bgTypography, {
-          opacity: 0.85,
-          scale: 1,
-          duration: 1.2,
-          ease: 'power2.out'
-        }, 0.05);
-      }
-
-      // 0.1s: Salutation greeting
+      // ── 0.0 – 0.5s: Hero Background & Salutation Appear ──────────
       if (salutation) {
         this.entranceTimeline.to(salutation, {
           opacity: 1,
-          y: 0,
-          duration: 0.55,
-          ease: 'power3.out'
-        }, 0.1);
+          x: 0,
+          duration: 0.6,
+          ease: 'power2.out'
+        }, 0.2);
       }
 
       if (salutationLine) {
@@ -227,103 +298,128 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
           opacity: 1,
           duration: 0.5,
           ease: 'power2.out'
-        }, 0.15);
+        }, 0.25);
       }
 
-      // 0.3s: Letter-by-letter reveal for RAMUMANIMEHALAI
-      this.entranceTimeline.to(nameChars, {
-        opacity: 1,
-        y: 0,
-        filter: 'blur(0px)',
-        duration: 0.65,
-        stagger: 0.035,
-        ease: 'power3.out'
-      }, 0.3);
-
-      // 0.85s: Title words slide-up
-      if (titleElements.length) {
-        this.entranceTimeline.to(titleElements, {
-          opacity: 1,
+      // ── 0.5 – 1.5s: Name Flies In Character by Character ─────────
+      // Entering from Left, Right, Top, and Bottom with subtle rotation
+      nameChars.forEach((charEl, idx) => {
+        this.entranceTimeline!.to(charEl, {
+          x: 0,
           y: 0,
-          duration: 0.55,
-          stagger: 0.08,
+          rotation: 0,
+          opacity: 1,
+          scale: 1,
+          filter: 'blur(0px)',
+          duration: 0.85,
           ease: 'power3.out'
-        }, 0.85);
+        }, 0.5 + idx * 0.045);
+      });
+
+      // ── 1.5 – 2.2s: Professional Title Multi-Directional Entry ────
+      if (titleAngular) {
+        this.entranceTimeline.to(titleAngular, {
+          x: 0,
+          opacity: 1,
+          scale: 1,
+          filter: 'blur(0px)',
+          duration: 0.68,
+          ease: 'power2.out'
+        }, 1.5);
       }
 
-      // 1.2s: Gold separator expands
+      if (titleSep) {
+        this.entranceTimeline.to(titleSep, {
+          scale: 1,
+          opacity: 1,
+          duration: 0.4,
+          ease: 'back.out(2)'
+        }, 1.6);
+      }
+
+      if (titleFrontend) {
+        this.entranceTimeline.to(titleFrontend, {
+          x: 0,
+          opacity: 1,
+          scale: 1,
+          filter: 'blur(0px)',
+          duration: 0.68,
+          ease: 'power2.out'
+        }, 1.65);
+      }
+
+      if (titleDeveloper) {
+        this.entranceTimeline.to(titleDeveloper, {
+          x: 0,
+          opacity: 1,
+          scale: 1,
+          filter: 'blur(0px)',
+          duration: 0.72,
+          ease: 'power2.out'
+        }, 1.75);
+      }
+
       if (separator) {
         this.entranceTimeline.to(separator, {
           scaleX: 1,
           opacity: 1,
-          duration: 0.6,
-          ease: 'power2.inOut'
-        }, 1.2);
-      }
-
-      // 1.4s: Description words staggered reveal
-      if (descWords.length) {
-        this.entranceTimeline.to(descWords, {
-          opacity: 1,
-          y: 0,
-          filter: 'blur(0px)',
-          duration: 0.45,
-          stagger: 0.03,
-          ease: 'power2.out'
-        }, 1.4);
-      }
-
-      // 1.9s: Action buttons
-      const buttons = [btnPrimary, btnTalk].filter(Boolean);
-      if (buttons.length) {
-        this.entranceTimeline.to(buttons, {
-          opacity: 1,
-          y: 0,
-          scale: 1,
           duration: 0.55,
-          stagger: 0.1,
-          ease: 'power3.out'
-        }, 1.9);
+          ease: 'power2.out'
+        }, 1.85);
       }
 
-      // 2.1s: Meta row (status pill + social links)
-      if (statusPill) {
-        this.entranceTimeline.to(statusPill, {
-          opacity: 1,
+      // ── 2.2 – 3.2s: Description Word-by-Word Staggered Reveal ────
+      descWords.forEach((wordEl, idx) => {
+        this.entranceTimeline!.to(wordEl, {
+          x: 0,
           y: 0,
-          duration: 0.45,
+          opacity: 1,
+          filter: 'blur(0px)',
+          duration: 0.55,
           ease: 'power2.out'
-        }, 2.1);
+        }, 2.2 + idx * 0.045);
+      });
+
+      // ── 3.2 – 4.0s: Action Buttons & Social Icons Animate In ──────
+      if (btnPrimary) {
+        this.entranceTimeline.to(btnPrimary, {
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 0.65,
+          ease: 'back.out(1.5)'
+        }, 3.2);
+      }
+
+      if (btnTalk) {
+        this.entranceTimeline.to(btnTalk, {
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 0.65,
+          ease: 'back.out(1.5)'
+        }, 3.35);
       }
 
       if (socialLinks.length) {
         this.entranceTimeline.to(socialLinks, {
-          opacity: 1,
           y: 0,
-          duration: 0.45,
-          stagger: 0.06,
-          ease: 'power2.out'
-        }, 2.18);
-      }
-
-      // 2.3s: Editorial badge (desktop)
-      if (editorialBadge) {
-        this.entranceTimeline.to(editorialBadge, {
           opacity: 1,
-          x: 0,
-          duration: 0.55,
+          scale: 1,
+          duration: 0.5,
+          stagger: 0.08,
           ease: 'power2.out'
-        }, 2.3);
+        }, 3.55);
       }
 
-      // 2.45s: Scroll indicator
+      // ── 4.0 – 4.5s: Final Subtle Settling & Scroll Indicator ──────
       if (scrollIndicator) {
         this.entranceTimeline.to(scrollIndicator, {
-          opacity: 1,
           y: 0,
-          duration: 0.5,
+          opacity: 1,
+          duration: 0.6,
           ease: 'power2.out'
-        }, 2.45);
+        }, 3.9);
       }
     });
   }
@@ -334,7 +430,8 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
     const hero = this.heroSectionRef?.nativeElement;
     if (!canvas || !hero) return;
 
-    this.ctx = canvas.getContext('2d', { alpha: true });
+    // Use alpha: false for direct GPU blitting without transparency overhead
+    this.ctx = canvas.getContext('2d', { alpha: false });
     if (this.ctx) {
       this.ctx.imageSmoothingEnabled = true;
       this.ctx.imageSmoothingQuality = 'high';
@@ -343,7 +440,7 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
     canvas.width = this.CANVAS_WIDTH;
     canvas.height = this.CANVAS_HEIGHT;
 
-    // Check user reduced motion preference
+    // Check for user reduced motion preference
     const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) {
       this.loadSingleFrame(0).then(() => this.renderFrame(0));
@@ -367,86 +464,81 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
     return `/frames/frame_${padded}.webp`;
   }
 
-  // ── Single Frame Loader ─────────────────────────────────────────
+  // ── Single Frame Loader with Map-Based Promise Deduplication ───
   private loadSingleFrame(index: number): Promise<HTMLImageElement> {
-    return new Promise((resolve, reject) => {
-      if (this.images[index]) {
-        resolve(this.images[index]!);
-        return;
-      }
+    if (this.images[index]) {
+      return Promise.resolve(this.images[index]!);
+    }
+    const existing = this.loadingPromises.get(index);
+    if (existing) {
+      return existing;
+    }
 
+    const promise = new Promise<HTMLImageElement>((resolve, reject) => {
       const img = new Image();
       img.src = this.getFrameUrl(index);
       img.onload = () => {
         if (this.destroyed) return;
         this.images[index] = img;
         this.loadedIndices.add(index);
+        this.loadingPromises.delete(index);
         resolve(img);
       };
-      img.onerror = () => reject();
+      img.onerror = (err) => {
+        this.loadingPromises.delete(index);
+        reject(err);
+      };
     });
+
+    this.loadingPromises.set(index, promise);
+    return promise;
+  }
+
+  // ── Preload Buffer Window Around Active Scroll Position ─────────
+  private preloadWindow(center: number, before = 4, after = 10): void {
+    const start = Math.max(0, center - before);
+    const end = Math.min(this.TOTAL_FRAMES - 1, center + after);
+    for (let i = start; i <= end; i++) {
+      if (!this.loadedIndices.has(i) && !this.loadingPromises.has(i)) {
+        this.loadSingleFrame(i).catch(() => { });
+      }
+    }
   }
 
   // ── Progressive Frame Loading Strategy ─────────────────────────
   private startProgressiveLoading(): void {
-    // Phase 1: Critical head batch (frames 1 to 20) for immediate smooth scrub start
-    const criticalBatch: Promise<HTMLImageElement>[] = [];
-    for (let i = 1; i < Math.min(21, this.TOTAL_FRAMES); i++) {
-      criticalBatch.push(this.loadSingleFrame(i).catch(() => null as any));
+    // Phase 1: Rapidly load first 30 frames for immediate smooth scroll start
+    const initialBatch: Promise<HTMLImageElement>[] = [];
+    for (let i = 1; i < Math.min(30, this.TOTAL_FRAMES); i++) {
+      initialBatch.push(this.loadSingleFrame(i).catch(() => null as any));
     }
 
-    Promise.all(criticalBatch).then(() => {
+    Promise.all(initialBatch).then(() => {
       if (this.destroyed) return;
 
-      // Phase 2: Keyframe scaffold (every 5th frame across duration)
-      const scaffoldIndices: number[] = [];
-      for (let i = 21; i < this.TOTAL_FRAMES; i += 5) {
-        scaffoldIndices.push(i);
-      }
-      if (!scaffoldIndices.includes(this.TOTAL_FRAMES - 1)) {
-        scaffoldIndices.push(this.TOTAL_FRAMES - 1);
-      }
-
-      const loadScaffoldBatch = async () => {
-        for (const idx of scaffoldIndices) {
-          if (this.destroyed) return;
-          await this.loadSingleFrame(idx).catch(() => { });
+      // Phase 2: Concurrent streaming of all remaining frames (concurrency 8)
+      const remainingIndices: number[] = [];
+      for (let i = 30; i < this.TOTAL_FRAMES; i++) {
+        if (!this.loadedIndices.has(i)) {
+          remainingIndices.push(i);
         }
+      }
 
-        // Phase 3: Fill remaining frames
-        this.streamRemainingFrames();
+      const CONCURRENCY = 8;
+      let pointer = 0;
+
+      const loadNext = () => {
+        if (this.destroyed || pointer >= remainingIndices.length) return;
+        const idx = remainingIndices[pointer++];
+        this.loadSingleFrame(idx)
+          .then(() => loadNext())
+          .catch(() => loadNext());
       };
 
-      loadScaffoldBatch();
-    });
-  }
-
-  // ── Stream Remaining Frames in Batches ──────────────────────────
-  private streamRemainingFrames(): void {
-    const remainingIndices: number[] = [];
-    for (let i = 0; i < this.TOTAL_FRAMES; i++) {
-      if (!this.loadedIndices.has(i)) {
-        remainingIndices.push(i);
+      for (let c = 0; c < CONCURRENCY; c++) {
+        loadNext();
       }
-    }
-
-    const CONCURRENCY = 6;
-    let pointer = 0;
-
-    const loadNext = () => {
-      if (this.destroyed || pointer >= remainingIndices.length) return;
-
-      const idx = remainingIndices[pointer++];
-      this.loadSingleFrame(idx).then(() => {
-        loadNext();
-      }).catch(() => {
-        loadNext();
-      });
-    };
-
-    for (let c = 0; c < CONCURRENCY; c++) {
-      loadNext();
-    }
+    });
   }
 
   // ── GSAP ScrollTrigger Setup ────────────────────────────────────
@@ -455,22 +547,23 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
       this.scrollTriggerInstance.kill();
     }
 
-    const isMobile = typeof window !== 'undefined' && window.innerWidth <= 991;
-
     this.scrollTriggerInstance = ScrollTrigger.create({
       trigger: hero,
       start: 'top top',
-      end: isMobile ? '+=120%' : '+=250%',
+      end: '+=250%',
       scrub: true,
-      pin: !isMobile,
+      pin: true,
+      pinSpacing: true,
       invalidateOnRefresh: true,
       onUpdate: (self) => {
         if (this.destroyed) return;
         // Map 0 to 1 directly to frame indexes (0 to TOTAL_FRAMES - 1)
-        this.targetFrameIndex = Math.min(
+        const target = Math.min(
           this.TOTAL_FRAMES - 1,
           Math.max(0, Math.round(self.progress * (this.TOTAL_FRAMES - 1)))
         );
+        this.targetFrameIndex = target;
+        this.preloadWindow(target, 4, 10);
       }
     });
 
@@ -483,10 +576,13 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
       if (this.destroyed) return;
 
       const diff = this.targetFrameIndex - this.currentInterpolatedFrame;
-      if (Math.abs(diff) > 0.05) {
-        // Responsive lerp without noticeable lag
-        this.currentInterpolatedFrame += diff * 0.32;
-        const frameToRender = Math.round(this.currentInterpolatedFrame);
+      if (Math.abs(diff) > 0.02) {
+        // Responsive lerp for fluid 60-120fps scrubbing without jitter or noticeable lag
+        this.currentInterpolatedFrame += diff * 0.35;
+        const frameToRender = Math.min(
+          this.TOTAL_FRAMES - 1,
+          Math.max(0, Math.round(this.currentInterpolatedFrame))
+        );
 
         if (frameToRender !== this.lastRenderedIndex) {
           this.renderFrame(frameToRender);
@@ -508,27 +604,45 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
   private renderFrame(index: number): void {
     if (!this.ctx) return;
 
-    const img = this.images[index] || this.findNearestLoadedFrame(index);
+    let img = this.images[index];
+    if (!img) {
+      // Trigger immediate load for requested index
+      this.loadSingleFrame(index).then((loadedImg) => {
+        if (this.destroyed) return;
+        if (this.lastRenderedIndex === index || Math.round(this.currentInterpolatedFrame) === index) {
+          this.drawToCanvas(loadedImg);
+        }
+      }).catch(() => { });
+
+      img = this.findNearestLoadedFrame(index);
+    }
+
     if (img && img.complete && img.naturalWidth > 0) {
-      // Clear canvas with studio pure black
-      this.ctx.fillStyle = '#000000';
-      this.ctx.fillRect(0, 0, this.CANVAS_WIDTH, this.CANVAS_HEIGHT);
+      this.drawToCanvas(img);
+    }
+  }
 
-      // Preserve the complete video frame without cropping or stretching
-      const imgRatio = img.naturalWidth / img.naturalHeight;
-      const canvasRatio = this.CANVAS_WIDTH / this.CANVAS_HEIGHT;
+  // ── Draw Single Image to Canvas with Correct Aspect Ratio ──────
+  private drawToCanvas(img: HTMLImageElement): void {
+    if (!this.ctx) return;
 
-      if (Math.abs(imgRatio - canvasRatio) < 0.002) {
-        this.ctx.drawImage(img, 0, 0, this.CANVAS_WIDTH, this.CANVAS_HEIGHT);
-      } else if (imgRatio > canvasRatio) {
-        const drawHeight = this.CANVAS_WIDTH / imgRatio;
-        const drawY = (this.CANVAS_HEIGHT - drawHeight) / 2;
-        this.ctx.drawImage(img, 0, drawY, this.CANVAS_WIDTH, drawHeight);
-      } else {
-        const drawWidth = this.CANVAS_HEIGHT * imgRatio;
-        const drawX = (this.CANVAS_WIDTH - drawWidth) / 2;
-        this.ctx.drawImage(img, drawX, 0, drawWidth, this.CANVAS_HEIGHT);
-      }
+    this.ctx.fillStyle = '#000000';
+    this.ctx.fillRect(0, 0, this.CANVAS_WIDTH, this.CANVAS_HEIGHT);
+
+    // Preserve the complete video frame without any cropping or stretching
+    const imgRatio = img.naturalWidth / img.naturalHeight;
+    const canvasRatio = this.CANVAS_WIDTH / this.CANVAS_HEIGHT;
+
+    if (Math.abs(imgRatio - canvasRatio) < 0.002) {
+      this.ctx.drawImage(img, 0, 0, this.CANVAS_WIDTH, this.CANVAS_HEIGHT);
+    } else if (imgRatio > canvasRatio) {
+      const drawHeight = this.CANVAS_WIDTH / imgRatio;
+      const drawY = (this.CANVAS_HEIGHT - drawHeight) / 2;
+      this.ctx.drawImage(img, 0, drawY, this.CANVAS_WIDTH, drawHeight);
+    } else {
+      const drawWidth = this.CANVAS_HEIGHT * imgRatio;
+      const drawX = (this.CANVAS_WIDTH - drawWidth) / 2;
+      this.ctx.drawImage(img, drawX, 0, drawWidth, this.CANVAS_HEIGHT);
     }
   }
 
@@ -587,7 +701,7 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
     talk.muted = false;
     talk.playbackRate = 1.0;
 
-    // Listen for the first frame playing before hiding canvas
+    // Listen for the first frame actually playing before hiding canvas (prevents black flash)
     talk.addEventListener('playing', () => {
       this.zone.run(() => {
         this.isTalkPlaying = true;
