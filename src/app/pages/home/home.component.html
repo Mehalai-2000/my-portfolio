@@ -1,10 +1,9 @@
 <!-- ═══════════════════════════════════════════════════════════════
      PREMIUM CINEMATIC HERO SECTION
      Theme: Pure Black Studio (#000000) · Warm Gold Accents (#D6B477)
-     Layout: 3-Column Hero Grid
+     Layout: Balanced Cinematic Two-Column Layout (Desktop)
              Col 1: Left Editorial Content (Sequential Typography Reveal)
-             Col 2: Horizontally Centered Walking Character (Head to Feet, Facing Camera)
-             Col 3: Right Editorial Flank (Desktop Highlights)
+             Col 2: Prominently Centered Walking Character (Head to Feet)
      Depth: Giant Background PORTFOLIO Typography behind Character
      ═══════════════════════════════════════════════════════════════ -->
 <div class="cinematic-hero" #heroSection aria-label="Cinematic Hero Section">
@@ -18,14 +17,14 @@
   </div>
 
   <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       MAIN 3-COLUMN HERO GRID
-       Column 1 (1fr): Left Editorial Content
-       Column 2 (auto): Center Walking Character Stage (Head to Feet)
-       Column 3 (1fr): Right Editorial Flank (Desktop Stats)
+       MAIN BALANCED HERO LAYOUT
+       Desktop: 2-Column Grid (Left: Content ~44% | Right: Centered Character ~56%)
+       Tablet: Proportional 2-Column Layout
+       Mobile: Clean Vertical Stack (Character Top | Content Bottom)
        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
-  <div class="hero-grid">
+  <div class="hero-layout">
 
-    <!-- ── COLUMN 1: LEFT-SIDE EDITORIAL CONTENT ── -->
+    <!-- ── LEFT COLUMN: EDITORIAL CONTENT ── -->
     <div class="hero-content">
 
       <!-- Small elegant greeting -->
@@ -127,9 +126,22 @@
         </div>
       </div>
 
+      <!-- Quick Editorial Stat Pills (Desktop) -->
+      <div class="hero-stats-row">
+        <div class="stat-item">
+          <span class="stat-num">03+</span>
+          <span class="stat-lbl">Years Experience</span>
+        </div>
+        <div class="stat-dot" aria-hidden="true"></div>
+        <div class="stat-item">
+          <span class="stat-num">100%</span>
+          <span class="stat-lbl">Clean Architecture</span>
+        </div>
+      </div>
+
     </div>
 
-    <!-- ── COLUMN 2: CENTER WALKING CHARACTER STAGE ── -->
+    <!-- ── RIGHT COLUMN: CENTER WALKING CHARACTER STAGE ── -->
     <div class="hero-character-stage">
       <!-- 60FPS Single HTML Canvas Sequence Renderer (Walk straight toward camera) -->
       <canvas #heroCanvas class="cinematic-canvas" [class.canvas-hidden]="isTalkPlaying"
@@ -141,19 +153,6 @@
         playsinline preload="auto" disablePictureInPicture
         [attr.aria-label]="'Audio introduction video of Ramumanimehalai'">
       </video>
-    </div>
-
-    <!-- ── COLUMN 3: RIGHT BALANCED FLANK (Desktop Stats & Details) ── -->
-    <div class="hero-editorial-badge" aria-hidden="true">
-      <div class="editorial-stat">
-        <span class="stat-num">03+</span>
-        <span class="stat-lbl">Years Experience</span>
-      </div>
-      <div class="editorial-divider"></div>
-      <div class="editorial-stat">
-        <span class="stat-num">100%</span>
-        <span class="stat-lbl">Clean Architecture</span>
-      </div>
     </div>
 
   </div>

@@ -163,7 +163,7 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
       const btnTalk = hero.querySelector('.btn-talk') as HTMLElement;
       const statusPill = hero.querySelector('.hero-status-pill') as HTMLElement;
       const socialLinks = hero.querySelectorAll('.social-link');
-      const editorialBadge = hero.querySelector('.hero-editorial-badge') as HTMLElement;
+      const editorialBadge = (hero.querySelector('.hero-stats-row') || hero.querySelector('.hero-editorial-badge')) as HTMLElement;
       const scrollIndicator = hero.querySelector('.hero-scroll') as HTMLElement;
 
       const titleElements = [titleAngular, titleSep, titleFrontend, titleDeveloper].filter(Boolean);
